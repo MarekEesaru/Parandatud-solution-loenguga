@@ -1,0 +1,25 @@
+<Solution>
+  <Folder Name="/Code/">
+    <Project Path="Code/Aids/Aids.csproj" />
+    <Project Path="Code/Data/Data.csproj" />
+    <Project Path="Code/Infra/Infra.csproj" />
+    <Project Path="Code/Logic/Logic.csproj" />
+    <Project Path="Code/Razor/Razor.csproj" />
+  </Folder>
+  <Folder Name="/Soft/" />
+  <Folder Name="/Soft/Movie/">
+    <Project Path="Soft/Movie/Client/Movie.Client.csproj" />
+    <Project Path="Soft/Movie/Server/Movie.csproj" />
+  </Folder>
+  <Folder Name="/Soft/Todo/">
+    <Project Path="Soft/Todo/Todo.Client/Todo.Client.csproj" />
+    <Project Path="Soft/Todo/Todo/Todo.csproj" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="Tests/Tests.Aids/Tests.Aids.csproj" Id="1f5998ec-8381-413b-8c2e-92cbc8f63e68" />
+    <Project Path="Tests/Tests.Data/Tests.Data.csproj" Id="4237c1e6-ae58-42f3-8fc4-97f05f873ed2" />
+    <Project Path="Tests/Tests.Infra/Tests.Infra.csproj" Id="f37fddc1-ee43-47fa-9340-122d116d6e6e" />
+    <Project Path="Tests/Tests.Logic/Tests.Logic.csproj" Id="e5cdfa2d-ccd2-4a2d-ab57-76011b31d5c1" />
+    <Project Path="Tests/Tests.Razor/Tests.Razor.csproj" Id="40ee27ab-1f90-4661-a72d-53cdbdfe61bc" />
+  </Folder>
+</Solution>

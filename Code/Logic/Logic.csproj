@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <AssemblyName>Abc.Logic</AssemblyName>
+    <RootNamespace>Abc.Logic</RootNamespace>
+  </PropertyGroup>
+
+</Project>
