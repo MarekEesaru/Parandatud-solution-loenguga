@@ -4,12 +4,12 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
 	<Nullable>disable</Nullable>
-	<AssemblyName>Abc.Data</AssemblyName>
-	<RootNamespace>Abc.Data</RootNamespace>
+	<AssemblyName>Abc.Jobs</AssemblyName>
+	<RootNamespace>Abc.Jobs</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Aids\Aids.csproj" />
+    <ProjectReference Include="..\Infra\Infra.csproj" />
   </ItemGroup>
 
 </Project>

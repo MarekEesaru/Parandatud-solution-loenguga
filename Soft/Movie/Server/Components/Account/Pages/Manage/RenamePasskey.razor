@@ -31,14 +31,14 @@
 </EditForm>
 
 @code {
-    private ApplicationUser? user;
-    private UserPasskeyInfo? passkey;
+    private ApplicationUser user = default!;
+    private UserPasskeyInfo passkey = default!;
 
     [CascadingParameter]
     private HttpContext HttpContext { get; set; } = default!;
 
     [Parameter]
-    public string? Id { get; set; }
+    public string Id { get; set; } = "";
 
     [SupplyParameterFromForm]
     private InputModel Input { get; set; } = default!;

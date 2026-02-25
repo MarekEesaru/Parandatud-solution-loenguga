@@ -54,9 +54,9 @@
 </div>
 
 @code {
-    private string? message;
-    private ApplicationUser? user;
-    private string? email;
+    private string message;
+    private ApplicationUser user;
+    private string email;
     private bool isEmailConfirmed;
 
     [CascadingParameter]
@@ -101,7 +101,7 @@
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
         var callbackUrl = NavigationManager.GetUriWithQueryParameters(
             NavigationManager.ToAbsoluteUri("Account/ConfirmEmailChange").AbsoluteUri,
-            new Dictionary<string, object?> { ["userId"] = userId, ["email"] = Input.NewEmail, ["code"] = code });
+            new Dictionary<string, object> { ["userId"] = userId, ["email"] = Input.NewEmail, ["code"] = code });
 
         await EmailSender.SendConfirmationLinkAsync(user, Input.NewEmail, HtmlEncoder.Default.Encode(callbackUrl));
 
@@ -126,7 +126,7 @@
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
         var callbackUrl = NavigationManager.GetUriWithQueryParameters(
             NavigationManager.ToAbsoluteUri("Account/ConfirmEmail").AbsoluteUri,
-            new Dictionary<string, object?> { ["userId"] = userId, ["code"] = code });
+            new Dictionary<string, object> { ["userId"] = userId, ["code"] = code });
 
         await EmailSender.SendConfirmationLinkAsync(user, email, HtmlEncoder.Default.Encode(callbackUrl));
 
@@ -138,6 +138,6 @@
         [Required]
         [EmailAddress]
         [Display(Name = "New email")]
-        public string? NewEmail { get; set; }
+        public string NewEmail { get; set; }
     }
 }

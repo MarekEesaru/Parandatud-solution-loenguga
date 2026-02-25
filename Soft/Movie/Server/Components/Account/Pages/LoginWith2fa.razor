@@ -45,14 +45,14 @@
 </p>
 
 @code {
-    private string? message;
+    private string message;
     private ApplicationUser user = default!;
 
     [SupplyParameterFromForm]
     private InputModel Input { get; set; } = default!;
 
     [SupplyParameterFromQuery]
-    private string? ReturnUrl { get; set; }
+    private string ReturnUrl { get; set; }
 
     [SupplyParameterFromQuery]
     private bool RememberMe { get; set; }

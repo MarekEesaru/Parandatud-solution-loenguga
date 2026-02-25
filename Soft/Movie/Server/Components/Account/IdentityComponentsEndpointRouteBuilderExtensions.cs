@@ -11,7 +11,7 @@ using Microsoft.Extensions.Primitives;
 using System.Security.Claims;
 using System.Text.Json;
 
-namespace Microsoft.AspNetCore.Routing
+namespace Abc.Soft.Web.Components.Account
 {
     internal static class IdentityComponentsEndpointRouteBuilderExtensions
     {
@@ -80,7 +80,7 @@ namespace Microsoft.AspNetCore.Routing
                 [FromServices] UserManager<ApplicationUser> userManager,
                 [FromServices] SignInManager<ApplicationUser> signInManager,
                 [FromServices] IAntiforgery antiforgery,
-                [FromQuery] string? username) =>
+                [FromQuery] string username) =>
             {
                 await antiforgery.ValidateRequestAsync(context);
 

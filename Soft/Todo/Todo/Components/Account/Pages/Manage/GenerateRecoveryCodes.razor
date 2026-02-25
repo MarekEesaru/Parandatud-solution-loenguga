@@ -38,9 +38,9 @@ else
 }
 
 @code {
-    private string? message;
-    private ApplicationUser? user;
-    private IEnumerable<string>? recoveryCodes;
+    private string message;
+    private ApplicationUser user;
+    private IEnumerable<string> recoveryCodes;
 
     [CascadingParameter]
     private HttpContext HttpContext { get; set; } = default!;

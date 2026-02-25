@@ -33,9 +33,9 @@
 </div>
 
 @code {
-    private ApplicationUser? user;
-    private string? username;
-    private string? phoneNumber;
+    private ApplicationUser user;
+    private string username;
+    private string phoneNumber;
 
     [CascadingParameter]
     private HttpContext HttpContext { get; set; } = default!;

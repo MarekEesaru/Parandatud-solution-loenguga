@@ -16,7 +16,7 @@ namespace Abc.Soft.Todo.Components.Account
             MaxAge = TimeSpan.FromSeconds(5),
         };
 
-        public void RedirectTo(string? uri)
+        public void RedirectTo(string uri)
         {
             uri ??= "";
 
@@ -29,7 +29,7 @@ namespace Abc.Soft.Todo.Components.Account
             navigationManager.NavigateTo(uri);
         }
 
-        public void RedirectTo(string uri, Dictionary<string, object?> queryParameters)
+        public void RedirectTo(string uri, Dictionary<string, object> queryParameters)
         {
             var uriWithoutQuery = navigationManager.ToAbsoluteUri(uri).GetLeftPart(UriPartial.Path);
             var newUri = navigationManager.GetUriWithQueryParameters(uriWithoutQuery, queryParameters);

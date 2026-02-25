@@ -2,9 +2,10 @@
   <Folder Name="/Code/">
     <Project Path="Code/Aids/Aids.csproj" />
     <Project Path="Code/Data/Data.csproj" />
+    <Project Path="Code/Domain/Domain.csproj" />
     <Project Path="Code/Infra/Infra.csproj" />
-    <Project Path="Code/Logic/Logic.csproj" />
-    <Project Path="Code/Razor/Razor.csproj" />
+    <Project Path="Code/Jobs/Jobs.csproj" Id="9f127cd1-0f80-471a-af98-d48cff583de9" />
+    <Project Path="Code/Shared/Shared.csproj" />
   </Folder>
   <Folder Name="/Soft/" />
   <Folder Name="/Soft/Movie/">
