@@ -16,7 +16,7 @@ namespace Abc.Soft.Web.Components.Account
             MaxAge = TimeSpan.FromSeconds(5),
         };
 
-        public void RedirectTo(string? uri)
+        public void RedirectTo(string uri)
         {
             uri ??= "";
 

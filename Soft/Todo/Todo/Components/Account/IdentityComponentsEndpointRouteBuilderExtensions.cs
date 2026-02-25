@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using System.Security.Claims;
 using System.Text.Json;
+using Microsoft.Extensions.Logging;
 
 namespace Abc.Soft.Todo.Components.Account
 {
@@ -123,7 +124,12 @@ namespace Abc.Soft.Todo.Components.Account
                 }
 
                 var userId = await userManager.GetUserIdAsync(user);
-                downloadLogger.LogInformation("User with ID '{UserId}' asked for their personal data.", userId);
+
+                // Fix for CA1873: avoid evaluating/logging values when logging is disabled.
+                if (downloadLogger.IsEnabled(LogLevel.Information))
+                {
+                    downloadLogger.LogInformation("User with ID '{UserId}' asked for their personal data.", userId);
+                }
 
                 // Only include personal data for download
                 var personalData = new Dictionary<string, string>();

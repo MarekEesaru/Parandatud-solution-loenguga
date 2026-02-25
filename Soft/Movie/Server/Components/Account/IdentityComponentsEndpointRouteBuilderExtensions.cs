@@ -123,7 +123,12 @@ namespace Abc.Soft.Web.Components.Account
                 }
 
                 var userId = await userManager.GetUserIdAsync(user);
-                downloadLogger.LogInformation("User with ID '{UserId}' asked for their personal data.", userId);
+
+                // Guard the logging call to avoid expensive argument evaluation when logging is disabled (CA1873).
+                if (downloadLogger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Information))
+                {
+                    downloadLogger.LogInformation("User with ID '{UserId}' asked for their personal data.", userId);
+                }
 
                 // Only include personal data for download
                 var personalData = new Dictionary<string, string>();
