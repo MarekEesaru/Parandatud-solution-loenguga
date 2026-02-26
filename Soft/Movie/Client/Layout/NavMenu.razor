@@ -1,6 +1,7 @@
 ﻿@implements IDisposable
 
 @inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
@@ -12,39 +13,37 @@
 
 <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
     <nav class="nav flex-column">
-        <MyNavLink Href="" Match="NavLinkMatch.All" IconClass="bi-home-icon" Text="Home"></MyNavLink>
-        <MyNavLink Href="Movies" IconClass="bi-list" Text="Movies"></MyNavLink>
-        <MyNavLink Href="counter" IconClass ="bi-counter-icon" Text="Counter"></MyNavLink>
-        <MyNavLink Href="Weather" IconClass="bi-list-icon" Text="Weather"></MyNavLink>
-        <MyNavLink Href="Auth" IconClass="bi-lock-icon" Text="Auth Required"></MyNavLink>
+        <MyNavLink Href="" Match="NavLinkMatch.All" IconClass="home-icon" Text="Home"></MyNavLink>
+        <MyNavLink Href="Movies" IconClass="movie-icon" Text="Movies"></MyNavLink>
+        <MyNavLink Href="counter" IconClass ="counter-icon" Text="Counter"></MyNavLink>
+        <MyNavLink Href="Weather" IconClass="list-icon" Text="Weather"></MyNavLink>
+        <MyNavLink Href="Auth" IconClass="lock-icon" Text="Auth Required"></MyNavLink>
         <AuthorizeView>
             <Authorized>
-                <MyNavLink Href="Account/Manage" IconClass="bi-person-icon" Text="@context.User.Identity?.Name"></MyNavLink>
-                <div class="nav-item px-3">
-                    <form action="Account/Logout" method="post">
+                <MyNavLink Href="Account/Manage" IconClass="person-icon" Text="@Name"></MyNavLink>
+                <MyNavLink Href="Account/Logout" IconClass="arrow-icon" Text="Logout">
                         <AntiforgeryToken />
                         <input type="hidden" name="ReturnUrl" value="@currentUrl" />
-                        <button type="submit" class="nav-link">
-                            <span class="bi bi-arrow-icon" aria-hidden="true"></span> Logout
-                        </button>
-                    </form>
-                </div>
+                </MyNavLink>
             </Authorized>
             <NotAuthorized>
-                <MyNavLink Href="Account/Register" IconClass="bi-register-icon" Text="Register"></MyNavLink>
-                <MyNavLink Href="Account/Login" IconClass="bi-badge-icon" Text="login"></MyNavLink>
+                <MyNavLink Href="Account/Register" IconClass="register-icon" Text="Register"></MyNavLink>
+                <MyNavLink Href="Account/Login" IconClass="badge-icon" Text="login"></MyNavLink>
             </NotAuthorized>
         </AuthorizeView>
     </nav>
 </div>
 
 @code {
-    private string? currentUrl;
+    private string currentUrl;
+    private string Name;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
         NavigationManager.LocationChanged += OnLocationChanged;
+        var context = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        Name = context.User.Identity?.Name ?? string.Empty;
     }
 
     private void OnLocationChanged(object sender, LocationChangedEventArgs e)
