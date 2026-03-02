@@ -8,6 +8,11 @@
 	<AssemblyName>Abc.Tests.Infra</AssemblyName>
 	<RootNamespace>Abc.Tests.Infra</RootNamespace>
     <UseVSTest>true</UseVSTest>
+	<PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Code\Infra\Infra.csproj" />
+  </ItemGroup>
 
 </Project>

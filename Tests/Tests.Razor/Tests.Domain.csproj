@@ -5,9 +5,14 @@
     <LangVersion>latest</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
-	<AssemblyName>Abc.Tests.Razor</AssemblyName>
-	<RootNamespace>Abc.Tests.Razor</RootNamespace>
+	<AssemblyName>Abc.Tests.Domain</AssemblyName>
+	<RootNamespace>Abc.Tests.Domain</RootNamespace>
     <UseVSTest>true</UseVSTest>
+	<PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Code\Domain\Domain.csproj" />
+  </ItemGroup>
 
 </Project>

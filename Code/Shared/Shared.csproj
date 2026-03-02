@@ -6,6 +6,7 @@
 	<AssemblyName>Abc.Shared</AssemblyName>
 	<RootNamespace>Abc.Shared</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
+	<PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
 

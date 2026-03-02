@@ -6,6 +6,7 @@
     <Nullable>disable</Nullable>
     <AssemblyName>Abc.Aids</AssemblyName>
     <RootNamespace>Abc.Aids</RootNamespace>
+	<PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
 </Project>

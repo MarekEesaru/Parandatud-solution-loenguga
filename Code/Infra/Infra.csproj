@@ -6,6 +6,7 @@
     <Nullable>disable</Nullable>
     <AssemblyName>Abc.Infra</AssemblyName>
     <RootNamespace>Abc.Infra</RootNamespace>
+	<PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>
