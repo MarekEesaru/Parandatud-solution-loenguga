@@ -1,12 +1,9 @@
-using System.Reflection;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace Abc.Tests.Data;
-public abstract class BaseTests<TClass> where TClass : class, new()
+namespace Abc.Tests.Aids;
+public abstract class BaseTests<TClass>: TestAids<TClass> where TClass : class, new()
 {
-    protected TClass obj;
-    private const BindingFlags publicDeclared = BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Static;
     [TestInitialize] public void Initialize() => obj = new TClass();
     [TestMethod] public void CanCreateTest() => Assert.IsNotNull(obj);
     
@@ -27,7 +24,4 @@ public abstract class BaseTests<TClass> where TClass : class, new()
                 Assert.Inconclusive($"{m} is not tested!");
         }
     }
-    
-    private static IEnumerable<string> GetProperties() => Aids.GetType.PropertyNames<TClass>(publicDeclared);
-    private static IEnumerable<string> GetMethods() => Aids.GetType.MethodNames<TClass>(publicDeclared, false);
 }
