@@ -1,14 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Abc.Data.Common;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Abc.Data;
-
-public class  Currency
+public sealed class Currency: NamedEntity
 {
-    public int Id { get; set; }
-    public string Code { get; set; }   //EUR
-    public string Name { get; set; }   //Euro
-    public string Symbol { get; set; } //€
-    [Column(TypeName = "decimal(18, 4)")]
-    public decimal ExchangeRate { get; set; }
+    public string NumericCode { get; set; } = "";
+    public string MajorUnitSymbol { get; set; } = "";
+    public string MinorUnitSymbol { get; set; } = "";
+    public double RatioOfMinorUnit { get; set; }
+    public bool IsIsoCurrency { get; set; }
 }

@@ -1,13 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Abc.Data.Common;
+using System.ComponentModel.DataAnnotations;
 
 namespace Abc.Data;
 
-public class  Country
+public class  Country: NamedEntity
 {
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public string Continent { get; set; }
-    public string Language { get; set; }
+    public string OfficialName { get; set; } = "";
+    public string NativeName { get; set; } = "";
+    public string NumericCode { get; set; } = "";
+    bool IsIsoCountry { get; set; }
+    bool IsLoyaltyProgram { get; set; }
+    public string IsoCode { get; set; } = "";
 }
 
 
