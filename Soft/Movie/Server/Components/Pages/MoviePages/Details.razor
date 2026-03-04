@@ -19,10 +19,7 @@
     }
     else {
         <dl class="row">
-            <MyViewItem Label="Title" Value="@movie.Title" />
-            <MyViewItem Label="ReleaseDate" Value="@movie.ReleaseDate" />
-            <MyViewItem Label="Genre" Value="@movie.Genre" />
-            <MyViewItem Label="Price" Value="@movie.Price" />
+            <MyEntityViewer Entity="movie" />
         </dl>
         <div>
             <a href="@($"/movies/edit?id={movie.Id}")">Edit</a> |

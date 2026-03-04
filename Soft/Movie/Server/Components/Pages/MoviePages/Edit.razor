@@ -24,10 +24,10 @@ else
                 <DataAnnotationsValidator />
                 <ValidationSummary role="alert"/>
                 <input type="hidden" name="Movie.Id" value="@Movie.Id" />
-                <MyEditItem TValue="string" Id="title" Label="Title:" @bind-Value="Movie.Title"/>
-                <MyEditItem TValue="DateTime" Id="releasedate" Label="ReleaseDate:" @bind-Value="Movie.ReleaseDate" />
-                <MyEditItem TValue="string" Id="genre" Label="Genre:" @bind-Value="Movie.Genre" />
-                <MyEditItem TValue="decimal" Id="price" Label="Price:" @bind-Value="Movie.Price" />
+                <MyPropertyEditor TValue="string" Id="title" Label="Title:" @bind-Value="Movie.Title" />
+                <MyPropertyEditor TValue="DateTime" Id="releasedate" Label="ReleaseDate:" @bind-Value="Movie.ReleaseDate" />
+                <MyPropertyEditor TValue="string" Id="genre" Label="Genre:" @bind-Value="Movie.Genre" />
+                <MyPropertyEditor TValue="decimal" Id="price" Label="Price:" @bind-Value="Movie.Price" />
                 <button type="submit" class="btn btn-primary">Save</button>
             </EditForm>
         </div>

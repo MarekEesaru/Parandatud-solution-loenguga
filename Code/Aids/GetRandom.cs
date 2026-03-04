@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Abc.Aids
 {
-    internal class GetRandom
+    public static class GetRandom
     {
         private static readonly Random r = Random.Shared;
         public static sbyte Int8(sbyte min = sbyte.MinValue, sbyte max = sbyte.MaxValue)
