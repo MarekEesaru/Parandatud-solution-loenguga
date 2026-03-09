@@ -1,4 +1,4 @@
-﻿@page "/movies/details"
+﻿@page "/countries/details"
 @attribute [ExcludeFromInteractiveRouting]
 @using Abc.Soft.Web.Data
 @using Microsoft.EntityFrameworkCore
@@ -6,42 +6,35 @@
 @inject IDbContextFactory<Abc.Soft.Web.Data.ApplicationDbContext> DbFactory
 @inject NavigationManager NavigationManager
 
-<PageTitle>Details</PageTitle>
+<PageTitle>Country Details</PageTitle>
 
 <h1>Details</h1>
 
 <div>
-    <h2>Movie</h2>
+    <h2>Country</h2>
     <hr />
-    @if (movie is null)
+    @if (country is null)
     {
         <p><em>Loading...</em></p>
     }
     else {
         <dl class="row">
-            <MyEntityViewer Entity="movie" />
+            <MyEntityViewer Entity="country" />
         </dl>
         <div>
-            <a href="@($"/movies/edit?id={movie.Id}")">Edit</a> |
-            <a href="@($"/movies")">Back to List</a>
+            <a href="@($"/countries/edit?id={country.Id}")">Edit</a> |
+            <a href="@($"/countries")">Back to List</a>
         </div>
     }
 </div>
 
 @code {
-    private Movie movie;
-
-    [SupplyParameterFromQuery]
-    private int Id { get; set; }
-
+    private Country country;
+    [SupplyParameterFromQuery] private Guid Id { get; set; }
     protected override async Task OnInitializedAsync()
     {
         using var context = DbFactory.CreateDbContext();
-        movie = await context.Movies.FirstOrDefaultAsync(m => m.Id == Id);
-
-        if (movie is null)
-        {
-            NavigationManager.NotFound();
-        }
+        country = await context.Countries.FirstOrDefaultAsync(m => m.Id == Id);
+        if (country is null) NavigationManager.NotFound();
     }
 }
