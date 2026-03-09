@@ -5,24 +5,17 @@
 @using Abc.Data
 @using Abc.Soft.Web.Data
 @implements IAsyncDisposable
-@inject IDbContextFactory<Abc.Soft.Web.Data.AbcSoftWebContext> DbFactory
+@inject IDbContextFactory<Abc.Soft.Web.Data.ApplicationDbContext> DbFactory
 
 <PageTitle>Index</PageTitle>
 
 <h1>Index</h1>
 
-<div>
-    <form action="/movies" data-enhance data-permanent>
-        <input type="search" name="titleFilter" value="@TitleFilter" />
-        <input type="submit" value="Search" />
-    </form>
-</div>
-
 <p>
     <a href="movies/create">Create New</a>
 </p>
 
-<QuickGrid Class="table" Items="FilteredMovies">
+<QuickGrid Class="table" Items="context.Movies">
     <PropertyColumn Property="movie => movie.Title" />
     <PropertyColumn Property="movie => movie.ReleaseDate" />
     <PropertyColumn Property="movie => movie.Genre" />
@@ -40,8 +33,8 @@
     private string TitleFilter { get; set; }
 
     private IQueryable<Movie> FilteredMovies =>
-        context.Movie.Where(m => m.Title!.Contains(TitleFilter ?? string.Empty));
-    private AbcSoftWebContext context = default!;
+        context.Movies.Where(m => m.Title!.Contains(TitleFilter ?? string.Empty));
+    private ApplicationDbContext context = default!;
 
     protected override void OnInitialized()
     {

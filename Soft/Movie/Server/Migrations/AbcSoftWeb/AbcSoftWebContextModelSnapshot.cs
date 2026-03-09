@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Abc.Soft.Web.Migrations.AbcSoftWeb
 {
-    [DbContext(typeof(AbcSoftWebContext))]
+    [DbContext(typeof(ApplicationDbContext))]
     partial class AbcSoftWebContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

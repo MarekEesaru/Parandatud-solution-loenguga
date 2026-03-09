@@ -8,8 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContextFactory<AbcSoftWebContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("AbcSoftWebContext") ?? throw new InvalidOperationException("Connection string 'AbcSoftWebContext' not found.")));
 
 builder.Services.AddQuickGridEntityFrameworkAdapter();
 
@@ -31,8 +29,15 @@ builder.Services.AddAuthentication(options =>
     .AddIdentityCookies();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+
+// Use the factory as the primary registration
+builder.Services.AddDbContextFactory<ApplicationDbContext>((sp, options) =>
     options.UseSqlServer(connectionString));
+
+// Provide a scoped ApplicationDbContext produced by the factory (for code that expects a scoped DbContext)
+builder.Services.AddScoped(sp =>
+    sp.GetRequiredService<IDbContextFactory<ApplicationDbContext>>().CreateDbContext());
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentityCore<ApplicationUser>(options =>
@@ -44,14 +49,11 @@ builder.Services.AddIdentityCore<ApplicationUser>(options =>
     .AddSignInManager()
     .AddDefaultTokenProviders();
 
-builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
-
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    SeedData.Initialize(services);
 }
 
 // Configure the HTTP request pipeline.
