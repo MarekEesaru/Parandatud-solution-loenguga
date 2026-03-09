@@ -16,8 +16,8 @@
 </p>
 
 <QuickGrid Class="table" Items="context.Movies">
-    <PropertyColumn Property="movie => movie.Title" />
-    <PropertyColumn Property="movie => movie.ReleaseDate" />
+    <PropertyColumn Property="movie => movie.Name" />
+    <PropertyColumn Property="movie => movie.ValidFrom" />
     <PropertyColumn Property="movie => movie.Genre" />
     <PropertyColumn Property="movie => movie.Price" />
 
@@ -33,7 +33,7 @@
     private string TitleFilter { get; set; }
 
     private IQueryable<Movie> FilteredMovies =>
-        context.Movies.Where(m => m.Title!.Contains(TitleFilter ?? string.Empty));
+        context.Movies.Where(m => m.Name!.Contains(TitleFilter ?? string.Empty));
     private ApplicationDbContext context = default!;
 
     protected override void OnInitialized()

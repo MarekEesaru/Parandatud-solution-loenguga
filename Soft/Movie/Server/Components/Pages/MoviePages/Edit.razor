@@ -24,8 +24,8 @@ else
                 <DataAnnotationsValidator />
                 <ValidationSummary role="alert"/>
                 <input type="hidden" name="Movie.Id" value="@Movie.Id" />
-                <MyPropertyEditor TValue="string" Id="title" Label="Title:" @bind-Value="Movie.Title" />
-                <MyPropertyEditor TValue="DateTime" Id="releasedate" Label="ReleaseDate:" @bind-Value="Movie.ReleaseDate" />
+                <MyPropertyEditor TValue="string" Id="title" Label="Title:" @bind-Value="Movie.Name" />
+                <MyPropertyEditor TValue="DateTime?" Id="releasedate" Label="ReleaseDate:" @bind-Value="Movie.ValidFrom" />
                 <MyPropertyEditor TValue="string" Id="genre" Label="Genre:" @bind-Value="Movie.Genre" />
                 <MyPropertyEditor TValue="decimal" Id="price" Label="Price:" @bind-Value="Movie.Price" />
                 <button type="submit" class="btn btn-primary">Save</button>
@@ -39,7 +39,7 @@ else
 </div>
 
 @code {
-    [SupplyParameterFromQuery] private int Id { get; set; }
+    [SupplyParameterFromQuery] private Guid Id { get; set; }
     [SupplyParameterFromForm] private Movie Movie { get; set; }
     protected override async Task OnInitializedAsync()
     {
@@ -63,7 +63,7 @@ else
         }
         NavigationManager.NavigateTo("/movies");
     }
-    private bool MovieExists(int id)
+    private bool MovieExists(Guid id)
     {
         using var context = DbFactory.CreateDbContext();
         return context.Movies.Any(e => e.Id == id);
