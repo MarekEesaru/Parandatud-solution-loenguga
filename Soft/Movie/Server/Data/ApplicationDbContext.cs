@@ -8,5 +8,6 @@ namespace Abc.Soft.Web.Data
     {
         public DbSet<Movie> Movies { get; set; } = default!;
         public DbSet<Country> Countries { get; set; } = default!;
+        public DbSet<Currency> Currencies { get; set; } = default!;
     }
 }
