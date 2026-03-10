@@ -1,4 +1,4 @@
-﻿@page "/countries/edit"
+﻿@page "/currencies/edit"
 @attribute [ExcludeFromInteractiveRouting]
 @using Abc.Soft.Web.Data
 @using Microsoft.EntityFrameworkCore
@@ -6,13 +6,13 @@
 @inject IDbContextFactory<Abc.Soft.Web.Data.ApplicationDbContext> DbFactory
 @inject NavigationManager NavigationManager
 
-<PageTitle>Edit Country</PageTitle>
+<PageTitle>Edit Currency</PageTitle>
 
 <h1>Edit</h1>
 
-<h2>Country</h2>
+<h2>Currency</h2>
 <hr />
-@if (country is null)
+@if (currency is null)
 {
     <p><em>Loading...</em></p>
 }
@@ -20,19 +20,19 @@ else
 {
     <div class="row">
         <div class="col-md-4">
-            <EditForm method="post" Model="country" OnValidSubmit="updateCountry" FormName="edit" Enhance>
+            <EditForm method="post" Model="currency" OnValidSubmit="updateCurrency" FormName="edit" Enhance>
                 <DataAnnotationsValidator />
                 <ValidationSummary role="alert"/>
-                <input type="hidden" name="country.Id" value="@country.Id" />
-                <MyPropertyEditor TValue="string" Id="code" Label="Code:" @bind-Value="country.Code" />
-                <MyPropertyEditor TValue="string" Id="name" Label="Name:" @bind-Value="country.Name" />
-                <MyPropertyEditor TValue="string" Id="details" Label="Details:" @bind-Value="country.Details" />
-                <MyPropertyEditor TValue="string" Id="officialName" Label="Official Name:" @bind-Value="country.OfficialName" />
-                <MyPropertyEditor TValue="string" Id="isoCode" Label="ISO Code:" @bind-Value="country.IsoCode" />
-                <MyPropertyEditor TValue="string" Id="nativeName" Label="Native Name:" @bind-Value="country.NativeName" />
-                <MyPropertyEditor TValue="string" Id="numericCode" Label="Numeric Code:" @bind-Value="country.NumericCode" />
-                <MyPropertyEditor TValue="DateTime ?" Id="validFrom" Label="Valid From:" @bind-Value="country.ValidFrom" />
-                <MyPropertyEditor TValue="DateTime ?" Id="validTo" Label="Valid To:" @bind-Value="country.ValidTo" />
+                <input type="hidden" name="currency.Id" value="@currency.Id" />
+                <MyPropertyEditor TValue="string" Id="code" Label="Code:" @bind-Value="currency.Code" />
+                <MyPropertyEditor TValue="string" Id="name" Label="Name:" @bind-Value="currency.Name" />
+                <MyPropertyEditor TValue="string" Id="details" Label="Details:" @bind-Value="currency.Details" />
+                <MyPropertyEditor TValue="string" Id="majorUnitSymbol" Label="Major Unit Symbol:" @bind-Value="currency.MajorUnitSymbol" />
+                <MyPropertyEditor TValue="string" Id="minorUnitSymbol" Label="Minor Unit Symbol:" @bind-Value="currency.MinorUnitSymbol" />
+                <MyPropertyEditor TValue="double" Id="ratioOfMinorUnit" Label="Ratio Of Minor Unit:" @bind-Value="currency.RatioOfMinorUnit" />
+                <MyPropertyEditor TValue="string" Id="numericCode" Label="Numeric Code:" @bind-Value="currency.NumericCode" />
+                <MyPropertyEditor TValue="DateTime ?" Id="validFrom" Label="Valid From:" @bind-Value="currency.ValidFrom" />
+                <MyPropertyEditor TValue="DateTime ?" Id="validTo" Label="Valid To:" @bind-Value="currency.ValidTo" />
                 <button type="submit" class="btn btn-primary">Save</button>
             </EditForm>
         </div>
@@ -44,37 +44,37 @@ else
 
 @code {
     [SupplyParameterFromQuery] private Guid Id { get; set; }
-    [SupplyParameterFromForm] private Country country { get; set; }
+    [SupplyParameterFromForm] private Currency currency { get; set; }
     protected override async Task OnInitializedAsync()
     {
         using var context = DbFactory.CreateDbContext();
-        country ??= await context.Countries.FirstOrDefaultAsync(c => c.Id == Id);
-        if (country is null) NavigationManager.NotFound();
+        currency ??= await context.Currencies.FirstOrDefaultAsync(c => c.Id == Id);
+        if (currency is null) NavigationManager.NotFound();
     }
-    private async Task updateCountry()
+    private async Task updateCurrency()
     {
         using var context = DbFactory.CreateDbContext();
-        var dbCountry = await context.Countries.FirstOrDefaultAsync(c => c.Id == country!.Id);
-        if (dbCountry == null)
+        var dbCurrency = await context.Currencies.FirstOrDefaultAsync(c => c.Id == currency!.Id);
+        if (dbCurrency == null)
         {
             NavigationManager.NotFound();
             return;
         }
-        context.Entry(dbCountry).CurrentValues.SetValues(country);
+        context.Entry(dbCurrency).CurrentValues.SetValues(currency);
         try
         {
             await context.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (!countryExists(country!.Id)) NavigationManager.NotFound();
+            if (!CurrencyExists(currency!.Id)) NavigationManager.NotFound();
             else throw;
         }
-        NavigationManager.NavigateTo("/countries");
+        NavigationManager.NavigateTo("/currencies");
     }
-    private bool countryExists(Guid id)
+    private bool CurrencyExists(Guid id)
     {
         using var context = DbFactory.CreateDbContext();
-        return context.Countries.Any(e => e.Id == id);
+        return context.Currencies.Any(e => e.Id == id);
     }
 }
