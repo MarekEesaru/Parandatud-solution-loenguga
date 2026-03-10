@@ -1,4 +1,4 @@
-﻿@page "/countries/details"
+﻿@page "/currencies/details"
 @attribute [ExcludeFromInteractiveRouting]
 @using Abc.Soft.Web.Data
 @using Microsoft.EntityFrameworkCore
@@ -6,35 +6,35 @@
 @inject IDbContextFactory<Abc.Soft.Web.Data.ApplicationDbContext> DbFactory
 @inject NavigationManager NavigationManager
 
-<PageTitle>Country Details</PageTitle>
+<PageTitle>Currency Details</PageTitle>
 
 <h1>Details</h1>
 
 <div>
-    <h2>Country</h2>
+    <h2>Currency</h2>
     <hr />
-    @if (country is null)
+    @if (currency is null)
     {
         <p><em>Loading...</em></p>
     }
     else {
         <dl class="row">
-            <MyEntityViewer Entity="country" />
+            <MyEntityViewer Entity="currency" />
         </dl>
         <div>
-            <a href="@($"/countries/edit?id={country.Id}")">Edit</a> |
-            <a href="@($"/countries")">Back to List</a>
+            <a href="@($"/currencies/edit?id={currency.Id}")">Edit</a> |
+            <a href="@($"/currencies")">Back to List</a>
         </div>
     }
 </div>
 
 @code {
-    private Country country;
+    private Currency currency;
     [SupplyParameterFromQuery] private Guid Id { get; set; }
     protected override async Task OnInitializedAsync()
     {
         using var context = DbFactory.CreateDbContext();
-        country = await context.Countries.FirstOrDefaultAsync(m => m.Id == Id);
-        if (country is null) NavigationManager.NotFound();
+        currency = await context.Currencies.FirstOrDefaultAsync(m => m.Id == Id);
+        if (currency is null) NavigationManager.NotFound();
     }
 }
