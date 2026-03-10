@@ -1,4 +1,5 @@
 using Abc.Aids;
+using Abc.Data.Common;
 namespace Abc.Tests.Aids;
 
 [TestClass] public sealed class GetRandomTests
@@ -32,7 +33,7 @@ namespace Abc.Tests.Aids;
     }
     [TestMethod] public void GuidTest() => Assert.AreNotEqual(GetRandom.Guid(), GetRandom.Guid());
     [TestMethod] public void CharTest() => Assert.AreNotEqual(GetRandom.Char((char) 0, (char) max), GetRandom.Char((char)0, (char) max));
-    [TestMethod] public void floatTest() => Assert.AreNotEqual(GetRandom.Float(min, max), GetRandom.Float(min, max));
+    [TestMethod] public void FloatTest() => Assert.AreNotEqual(GetRandom.Float(min, max), GetRandom.Float(min, max));
     [TestMethod] public void BoolTest()
     {
         var x = GetRandom.Bool();
@@ -44,5 +45,16 @@ namespace Abc.Tests.Aids;
         }
         Assert.AreNotEqual(x, y);
     }
+    private class TestClass : NamedEntity { }
 
+       [TestMethod] public void ObjectTest()
+       {
+           var o1 = GetRandom.Object(typeof(TestClass));
+           var o2 = GetRandom.Object(typeof(TestClass));
+           foreach (var p in typeof(TestClass).GetProperties())
+           {
+               if (p.PropertyType.IsArray) continue;
+               Assert.AreNotEqual(p.GetValue(o1), p.GetValue(o2));
+           }
+    }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 
 namespace Abc.Aids
@@ -42,14 +43,14 @@ namespace Abc.Aids
             var length = Uint8(minLength, maxLength);
             var s = new char[length];
             for (var i = 0; i < length; i++) s[i] = Char('a', 'z');
-            return new string (s);
+            return new string(s);
         }
         public static DateTime DateTime(DateTime? min = null, DateTime? max = null)
         {
             var minTicks = min?.Ticks ?? System.DateTime.MinValue.Ticks;
             var maxTicks = max?.Ticks ?? System.DateTime.MaxValue.Ticks;
             var ticks = Int64(minTicks, maxTicks);
-            return new DateTime(ticks);;
+            return new DateTime(ticks); ;
         }
         public static System.Guid Guid()
         {
@@ -63,6 +64,44 @@ namespace Abc.Aids
             var maxTicks = max?.Ticks ?? System.TimeSpan.MaxValue.Ticks;
             var ticks = Int64(minTicks, maxTicks);
             return new TimeSpan(ticks); ;
+        }
+        public static object Object(Type t)
+        {
+            var x = Nullable.GetUnderlyingType(t);
+            if (x is not null) t = x;
+            var o = Activator.CreateInstance(t);
+            foreach (var p in t.GetProperties())
+            {
+                if (!p.CanWrite) continue;
+                if (p.PropertyType.IsArray) continue;
+                var v = IsClass(p) ? Object(p.PropertyType) : Value(p.PropertyType);
+                p.SetValue(o, v);
+            }
+            return o;
+        }
+        private static bool IsClass(PropertyInfo p) => p.PropertyType.IsClass && p.PropertyType != typeof(string);
+        private static object Value(Type t)
+        {
+            var x = Nullable.GetUnderlyingType(t);
+            if (x is not null) t = x;
+            if (t == typeof(sbyte)) return Int8();
+            if (t == typeof(byte)) return Uint8();
+            if (t == typeof(short)) return Int16();
+            if (t == typeof(ushort)) return Uint16();
+            if (t == typeof(int)) return Int32();
+            if (t == typeof(uint)) return Uint32();
+            if (t == typeof(long)) return Int64();
+            if (t == typeof(ulong)) return Uint64();
+            if (t == typeof(float)) return Float();
+            if (t == typeof(double)) return Double();
+            if (t == typeof(decimal)) return Decimal();
+            if (t == typeof(char)) return Char((char)0, char.MaxValue);
+            if (t == typeof(bool)) return Bool();
+            if (t == typeof(string)) return String();
+            if (t == typeof(DateTime)) return DateTime();
+            if (t == typeof(TimeSpan)) return TimeSpan();
+            if (t == typeof(Guid)) return Guid();
+            throw new NotSupportedException($"Type {t} is not supported.");
         }
     }
 }
