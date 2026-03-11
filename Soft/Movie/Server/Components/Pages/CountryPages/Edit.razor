@@ -1,9 +1,8 @@
 ﻿@page "/countries/edit"
 @attribute [ExcludeFromInteractiveRouting]
 @using Abc.Infra
-@using Microsoft.EntityFrameworkCore
 @using Abc.Data
-@inject IDbContextFactory<Abc.Infra.ApplicationDbContext> DbFactory
+@inject ICountriesRepo repo
 @inject NavigationManager NavigationManager
 
 <PageTitle>Edit Country</PageTitle>
@@ -47,34 +46,12 @@ else
     [SupplyParameterFromForm] private Country country { get; set; }
     protected override async Task OnInitializedAsync()
     {
-        using var context = DbFactory.CreateDbContext();
-        country ??= await context.Countries.FirstOrDefaultAsync(c => c.Id == Id);
+        country ??= await repo.GetAsync(Id);
         if (country is null) NavigationManager.NotFound();
     }
     private async Task updateCountry()
     {
-        using var context = DbFactory.CreateDbContext();
-        var dbCountry = await context.Countries.FirstOrDefaultAsync(c => c.Id == country!.Id);
-        if (dbCountry == null)
-        {
-            NavigationManager.NotFound();
-            return;
-        }
-        context.Entry(dbCountry).CurrentValues.SetValues(country);
-        try
-        {
-            await context.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!countryExists(country!.Id)) NavigationManager.NotFound();
-            else throw;
-        }
+        await repo.UpdateAsync(country);
         NavigationManager.NavigateTo("/countries");
-    }
-    private bool countryExists(Guid id)
-    {
-        using var context = DbFactory.CreateDbContext();
-        return context.Countries.Any(e => e.Id == id);
     }
 }
