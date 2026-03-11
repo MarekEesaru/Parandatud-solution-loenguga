@@ -12,7 +12,7 @@ namespace Abc.Infra
         Task<IEnumerable<TEntity>> GetAsync();
         Task<TEntity> CreateAsync(TEntity e);
         Task<TEntity> UpdateAsync(TEntity e);
-        Task<TEntity> DeleteAsync(Guid id);
+        Task DeleteAsync(Guid id);
     }
     public interface IMoviesRepo : IRepo<Movie> { }
     public interface ICountriesRepo : IRepo<Country> { }
