@@ -1,9 +1,9 @@
 ﻿@page "/countries/delete"
 @attribute [ExcludeFromInteractiveRouting]
-@using Abc.Soft.Web.Data
+@using Abc.Infra
 @using Microsoft.EntityFrameworkCore
 @using Abc.Data
-@inject IDbContextFactory<Abc.Soft.Web.Data.ApplicationDbContext> DbFactory
+@inject IDbContextFactory<Abc.Infra.ApplicationDbContext> DbFactory
 @inject NavigationManager NavigationManager
 
 <PageTitle>Delete Country</PageTitle>

@@ -1,7 +1,7 @@
-﻿using Abc.Soft.Web.Client.Pages;
+﻿using Abc.Infra;
+using Abc.Soft.Web.Client.Pages;
 using Abc.Soft.Web.Components;
 using Abc.Soft.Web.Components.Account;
-using Abc.Soft.Web.Data;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
