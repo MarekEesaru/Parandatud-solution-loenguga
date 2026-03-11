@@ -25,7 +25,6 @@
     <PropertyColumn Property="country => country.NumericCode" />
     <PropertyColumn Property="country => country.ValidFrom" />
     <PropertyColumn Property="country => country.ValidTo" />
-
     <TemplateColumn Context="country">
         <a href="@($"countries/edit?id={country.Id}")">Edit</a> |
         <a href="@($"countries/details?id={country.Id}")">Details</a> |

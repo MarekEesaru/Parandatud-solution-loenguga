@@ -1,9 +1,8 @@
 ﻿@page "/movies/delete"
 @attribute [ExcludeFromInteractiveRouting]
 @using Abc.Infra
-@using Microsoft.EntityFrameworkCore
 @using Abc.Data
-@inject IDbContextFactory<Abc.Infra.ApplicationDbContext> DbFactory
+@inject IMoviesRepo repo
 @inject NavigationManager NavigationManager
 
 <PageTitle>Delete Movie</PageTitle>
@@ -20,7 +19,7 @@
     }
     else {
         <MyEntityViewer Entity="movie" />
-        <EditForm method="post" Model="movie" OnValidSubmit="DeleteMovie" FormName="delete" Enhance>
+        <EditForm method="post" Model="movie" OnValidSubmit="deleteMovie" FormName="delete" Enhance>
             <button type="submit" class="btn btn-danger" disabled="@(movie is null)">Delete</button> |
             <a href="/movies">Back to List</a>
         </EditForm>
@@ -32,15 +31,12 @@
     [SupplyParameterFromQuery] private Guid Id { get; set; }
     protected override async Task OnInitializedAsync()
     {
-        using var context = DbFactory.CreateDbContext();
-        movie = await context.Movies.FirstOrDefaultAsync(m => m.Id == Id);
+        movie = await repo.GetAsync(Id);
         if (movie is null) NavigationManager.NotFound();
     }
-    private async Task DeleteMovie()
+    private async Task deleteMovie()
     {
-        using var context = DbFactory.CreateDbContext();
-        context.Movies.Remove(movie!);
-        await context.SaveChangesAsync();
+        await repo.DeleteAsync(movie!.Id);
         NavigationManager.NavigateTo("/movies");
     }
 }

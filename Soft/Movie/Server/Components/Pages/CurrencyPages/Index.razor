@@ -1,11 +1,11 @@
 ﻿@page "/currencies"
 @attribute [ExcludeFromInteractiveRouting]
-@using Microsoft.EntityFrameworkCore
 @using Microsoft.AspNetCore.Components.QuickGrid
 @using Abc.Data
 @using Abc.Infra
-@implements IAsyncDisposable
-@inject IDbContextFactory<Abc.Infra.ApplicationDbContext> DbFactory
+@using System.Linq
+@inject NavigationManager NavigationManager
+@inject ICurrenciesRepo repo
 
 <PageTitle>Currencies</PageTitle>
 
@@ -15,7 +15,7 @@
     <a href="currencies/create">Create New</a>
 </p>
 
-<QuickGrid Class="table" Items="context.Currencies">
+<QuickGrid Class="table" Items="Currencies">
     <PropertyColumn Property="currency => currency.Code" />
     <PropertyColumn Property="currency => currency.Name" />
     <PropertyColumn Property="currency => currency.Details" />
@@ -33,9 +33,9 @@
 </QuickGrid>
 
 @code {
-    private ApplicationDbContext context = default!;
-
-    protected override void OnInitialized() => context = DbFactory.CreateDbContext();
-
-    public async ValueTask DisposeAsync() => await context.DisposeAsync();
+    private IQueryable<Currency> Currencies = Enumerable.Empty<Currency>().AsQueryable();
+    protected override async Task OnInitializedAsync() {
+        if (repo is null) return;
+        Currencies = (await repo.GetAsync()).AsQueryable();
+    }
 }

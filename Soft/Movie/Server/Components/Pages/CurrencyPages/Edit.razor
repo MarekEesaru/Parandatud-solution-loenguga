@@ -1,9 +1,8 @@
 ﻿@page "/currencies/edit"
 @attribute [ExcludeFromInteractiveRouting]
 @using Abc.Infra
-@using Microsoft.EntityFrameworkCore
 @using Abc.Data
-@inject IDbContextFactory<Abc.Infra.ApplicationDbContext> DbFactory
+@inject ICurrenciesRepo repo
 @inject NavigationManager NavigationManager
 
 <PageTitle>Edit Currency</PageTitle>
@@ -47,34 +46,12 @@ else
     [SupplyParameterFromForm] private Currency currency { get; set; }
     protected override async Task OnInitializedAsync()
     {
-        using var context = DbFactory.CreateDbContext();
-        currency ??= await context.Currencies.FirstOrDefaultAsync(c => c.Id == Id);
+        currency ??= await repo.GetAsync(Id);
         if (currency is null) NavigationManager.NotFound();
     }
     private async Task updateCurrency()
     {
-        using var context = DbFactory.CreateDbContext();
-        var dbCurrency = await context.Currencies.FirstOrDefaultAsync(c => c.Id == currency!.Id);
-        if (dbCurrency == null)
-        {
-            NavigationManager.NotFound();
-            return;
-        }
-        context.Entry(dbCurrency).CurrentValues.SetValues(currency);
-        try
-        {
-            await context.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!CurrencyExists(currency!.Id)) NavigationManager.NotFound();
-            else throw;
-        }
+        await repo.UpdateAsync(currency);
         NavigationManager.NavigateTo("/currencies");
-    }
-    private bool CurrencyExists(Guid id)
-    {
-        using var context = DbFactory.CreateDbContext();
-        return context.Currencies.Any(e => e.Id == id);
     }
 }

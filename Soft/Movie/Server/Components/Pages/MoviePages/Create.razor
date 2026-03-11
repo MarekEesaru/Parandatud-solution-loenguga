@@ -1,9 +1,8 @@
 ﻿@page "/movies/create"
 @attribute [ExcludeFromInteractiveRouting]
 @using Abc.Infra
-@using Microsoft.EntityFrameworkCore
 @using Abc.Data
-@inject IDbContextFactory<Abc.Infra.ApplicationDbContext> DbFactory
+@inject IMoviesRepo repo
 @inject NavigationManager NavigationManager
 
 <PageTitle>Create Movie</PageTitle>
@@ -14,13 +13,13 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <EditForm method="post" Model="Movie" OnValidSubmit="AddMovie" FormName="create" Enhance>
+        <EditForm method="post" Model="movie" OnValidSubmit="AddMovie" FormName="create" Enhance>
             <DataAnnotationsValidator />
             <ValidationSummary class="text-danger" role="alert"/>
-            <MyPropertyEditor TValue="string" Id="title" Label="Title:" @bind-Value="Movie.Name" />
-            <MyPropertyEditor TValue="DateTime?" Id="releasedate" Label="Release Date:" @bind-Value="Movie.ValidFrom" />
-            <MyPropertyEditor TValue="string" Id="genre" Label="Genre:" @bind-Value="Movie.Genre" />
-            <MyPropertyEditor TValue="decimal" Id="price" Label="Price:" @bind-Value="Movie.Price" />
+            <MyPropertyEditor TValue="string" Id="title" Label="Title:" @bind-Value="movie.Name" />
+            <MyPropertyEditor TValue="DateTime ?" Id="releasedate" Label="Release Date:" @bind-Value="movie.ValidFrom" />
+            <MyPropertyEditor TValue="string" Id="genre" Label="Genre:" @bind-Value="movie.Genre" />
+            <MyPropertyEditor TValue="decimal" Id="price" Label="Price:" @bind-Value="movie.Price" />
             <button type="submit" class="btn btn-primary">Create</button>
         </EditForm>
     </div>
@@ -31,17 +30,11 @@
 </div>
 
 @code {
-    [SupplyParameterFromForm]
-    private Movie Movie { get; set; } = default!;
-
-    protected override void OnInitialized() => Movie ??= new();
-
-    // To protect from overposting attacks, see https://learn.microsoft.com/aspnet/core/blazor/forms/#mitigate-overposting-attacks.
+    [SupplyParameterFromForm] private Movie movie { get; set; } = default!;
+    protected override void OnInitialized() => movie ??= new();
     private async Task AddMovie()
     {
-        using var context = DbFactory.CreateDbContext();
-        context.Movies.Add(Movie);
-        await context.SaveChangesAsync();
+        await repo.CreateAsync(movie);
         NavigationManager.NavigateTo("/movies");
     }
 }

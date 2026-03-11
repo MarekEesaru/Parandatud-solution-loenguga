@@ -1,11 +1,12 @@
 ﻿@page "/movies"
 @attribute [ExcludeFromInteractiveRouting]
-@using Microsoft.EntityFrameworkCore
 @using Microsoft.AspNetCore.Components.QuickGrid
 @using Abc.Data
 @using Abc.Infra
-@implements IAsyncDisposable
-@inject IDbContextFactory<Abc.Infra.ApplicationDbContext> DbFactory
+@using System.Linq
+@inject NavigationManager NavigationManager
+@inject IMoviesRepo repo
+
 
 <PageTitle>Movies</PageTitle>
 
@@ -15,7 +16,7 @@
     <a href="movies/create">Create New</a>
 </p>
 
-<QuickGrid Class="table" Items="context.Movies">
+<QuickGrid Class="table" Items="Movies">
     <PropertyColumn Property="movie => movie.Name" />
     <PropertyColumn Property="movie => movie.ValidFrom" />
     <PropertyColumn Property="movie => movie.Genre" />
@@ -29,17 +30,10 @@
 </QuickGrid>
 
 @code {
-    [SupplyParameterFromQuery]
-    private string TitleFilter { get; set; }
-
-    private IQueryable<Movie> FilteredMovies =>
-        context.Movies.Where(m => m.Name!.Contains(TitleFilter ?? string.Empty));
-    private ApplicationDbContext context = default!;
-
-    protected override void OnInitialized()
+    private IQueryable<Movie> Movies = Enumerable.Empty<Movie>().AsQueryable();
+    protected override async Task OnInitializedAsync()
     {
-        context = DbFactory.CreateDbContext();
+        if (repo is null) return;
+        Movies = (await repo.GetAsync()).AsQueryable();
     }
-
-    public async ValueTask DisposeAsync() => await context.DisposeAsync();
 }

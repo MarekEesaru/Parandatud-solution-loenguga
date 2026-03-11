@@ -1,9 +1,8 @@
 ﻿@page "/currencies/create"
 @attribute [ExcludeFromInteractiveRouting]
 @using Abc.Infra
-@using Microsoft.EntityFrameworkCore
 @using Abc.Data
-@inject IDbContextFactory<Abc.Infra.ApplicationDbContext> DbFactory
+@inject ICurrenciesRepo repo
 @inject NavigationManager NavigationManager
 
 <PageTitle>Create Currency</PageTitle>
@@ -36,17 +35,11 @@
 </div>
 
 @code {
-    [SupplyParameterFromForm]
-    private Currency currency { get; set; } = default!;
-
+    [SupplyParameterFromForm] private Currency currency { get; set; } = default!;
     protected override void OnInitialized() => currency ??= new();
-
-    // To protect from overposting attacks, see https://learn.microsoft.com/aspnet/core/blazor/forms/#mitigate-overposting-attacks.
     private async Task addCurrency()
     {
-        using var context = DbFactory.CreateDbContext();
-        context.Currencies.Add(currency);
-        await context.SaveChangesAsync();
+        await repo.CreateAsync(currency);
         NavigationManager.NavigateTo("/currencies");
     }
 }
