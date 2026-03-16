@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Abc.Tests.Aids;
 public abstract class BaseTests<TClass>: TestAids<TClass> where TClass : class, new()
 {
-    [TestInitialize] public void Initialize() => obj = new TClass();
+    [TestInitialize] public virtual void Initialize() => obj = new TClass();
     [TestMethod] public void CanCreateTest() => Assert.IsNotNull(obj);
     
     [TestMethod]
