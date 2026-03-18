@@ -5,11 +5,11 @@ namespace Abc.Tests.Data;
 [TestClass]
 public sealed class CurrencyTests : BaseTests<Currency> 
 {
-    [TestMethod] public void NumericCodeTest() => isProperty<string>(nameof(Currency.NumericCode));
-    [TestMethod] public void MajorUnitSymbolTest() => isProperty<string>(nameof(Currency.MajorUnitSymbol));
-    [TestMethod] public void MinorUnitSymbolTest() => isProperty<string>(nameof(Currency.MinorUnitSymbol));
-    [TestMethod] public void RatioOfMinorUnitTest() => isProperty<double>(nameof(Currency.RatioOfMinorUnit));
-    [TestMethod] public void IsIsoCurrencyTest() => isProperty<bool>(nameof(Currency.IsIsoCurrency));
+    [TestMethod] public void NumericCodeTest() => IsProperty<string>(nameof(Currency.NumericCode));
+    [TestMethod] public void MajorUnitSymbolTest() => IsProperty<string>(nameof(Currency.MajorUnitSymbol));
+    [TestMethod] public void MinorUnitSymbolTest() => IsProperty<string>(nameof(Currency.MinorUnitSymbol));
+    [TestMethod] public void RatioOfMinorUnitTest() => IsProperty<double>(nameof(Currency.RatioOfMinorUnit));
+    [TestMethod] public void IsIsoCurrencyTest() => IsProperty<bool>(nameof(Currency.IsIsoCurrency));
 
 }
 

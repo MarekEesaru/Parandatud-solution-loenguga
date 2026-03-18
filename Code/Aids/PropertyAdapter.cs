@@ -2,7 +2,7 @@
 
 namespace Abc.Aids
 {
-    internal interface IPropertyAdapter
+    public interface IPropertyAdapter
     {
         PropertyInfo PropInfo { get; }
         object PropValue { get; }

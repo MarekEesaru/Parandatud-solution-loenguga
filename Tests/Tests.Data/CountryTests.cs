@@ -5,8 +5,8 @@ namespace Abc.Tests.Data;
 [TestClass]
 public sealed class CountryTests : BaseTests<Country> 
 {
-    [TestMethod] public void OfficialNameTest() => isProperty<string>(nameof(Country.OfficialName));
-    [TestMethod] public void NativeNameTest() => isProperty<string>(nameof(Country.NativeName));
-    [TestMethod] public void NumericCodeTest() => isProperty<string>(nameof(Country.NumericCode));
-    [TestMethod] public void IsoCodeTest() => isProperty<string>(nameof(Country.IsoCode));
+    [TestMethod] public void OfficialNameTest() => IsProperty<string>(nameof(Country.OfficialName));
+    [TestMethod] public void NativeNameTest() => IsProperty<string>(nameof(Country.NativeName));
+    [TestMethod] public void NumericCodeTest() => IsProperty<string>(nameof(Country.NumericCode));
+    [TestMethod] public void IsoCodeTest() => IsProperty<string>(nameof(Country.IsoCode));
 }

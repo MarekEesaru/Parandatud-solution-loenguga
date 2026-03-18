@@ -23,15 +23,7 @@ else
                 <DataAnnotationsValidator />
                 <ValidationSummary role="alert"/>
                 <input type="hidden" name="currency.Id" value="@currency.Id" />
-                <MyPropertyEditor TValue="string" Id="code" Label="Code:" @bind-Value="currency.Code" />
-                <MyPropertyEditor TValue="string" Id="name" Label="Name:" @bind-Value="currency.Name" />
-                <MyPropertyEditor TValue="string" Id="details" Label="Details:" @bind-Value="currency.Details" />
-                <MyPropertyEditor TValue="string" Id="majorUnitSymbol" Label="Major Unit Symbol:" @bind-Value="currency.MajorUnitSymbol" />
-                <MyPropertyEditor TValue="string" Id="minorUnitSymbol" Label="Minor Unit Symbol:" @bind-Value="currency.MinorUnitSymbol" />
-                <MyPropertyEditor TValue="double" Id="ratioOfMinorUnit" Label="Ratio Of Minor Unit:" @bind-Value="currency.RatioOfMinorUnit" />
-                <MyPropertyEditor TValue="string" Id="numericCode" Label="Numeric Code:" @bind-Value="currency.NumericCode" />
-                <MyPropertyEditor TValue="DateTime ?" Id="validFrom" Label="Valid From:" @bind-Value="currency.ValidFrom" />
-                <MyPropertyEditor TValue="DateTime ?" Id="validTo" Label="Valid To:" @bind-Value="currency.ValidTo" />
+                <MyEntityEditor Entity="currency" />
                 <button type="submit" class="btn btn-primary">Save</button>
             </EditForm>
         </div>
