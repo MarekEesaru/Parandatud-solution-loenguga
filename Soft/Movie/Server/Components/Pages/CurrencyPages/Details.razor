@@ -5,11 +5,7 @@
 @inject ICurrenciesRepo repo
 @inject NavigationManager NavigationManager
 
-<MyDetailsPage PageTitleText="Currency Details"
-               EntityTitle="Currency"
-               BasePath="/currencies"
-               Entity="currency"
-               EntityId="currency?.Id" />
+<MyDetailsPage PageTitleText="Currency Details" EntityTitle="Currency" BasePath="/currencies"Entity="currency"EntityId="currency?.Id" />
 
 @code {
     private Currency currency;

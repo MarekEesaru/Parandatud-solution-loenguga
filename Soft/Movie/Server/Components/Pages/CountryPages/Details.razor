@@ -5,11 +5,7 @@
 @inject ICountriesRepo repo
 @inject NavigationManager NavigationManager
 
-<MyDetailsPage PageTitleText="Country Details"
-               EntityTitle="Country"
-               BasePath="/=countries"
-               Entity="country"
-               EntityId="country?.Id" />
+<MyDetailsPage PageTitleText="Country Details" EntityTitle="Country" BasePath="/=countries" Entity="country" EntityId="country?.Id" />
 
 @code {
     private Country country;

@@ -5,12 +5,7 @@
 @inject ICountriesRepo repo
 @inject NavigationManager NavigationManager
 
-<MyDeletePage PageTitleText="Delete Country"
-              EntityTitle="Country"
-              BasePath="/countries"
-              Entity="country"
-              EntityId="country?.Id"
-              OnValidSubmit="deleteCountry" />
+<MyDeletePage PageTitleText="Delete Country" EntityTitle="Country" BasePath="/countries" Entity="country" EntityId="country?.Id" OnValidSubmit="deleteCountry" />
 
 @code {
     private Country country;

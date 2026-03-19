@@ -5,11 +5,12 @@
 @inject IMoviesRepo repo
 @inject NavigationManager NavigationManager
 
-<MyDetailsPage PageTitleText="Movie Details"
-               EntityTitle="Movie"
-               BasePath="/movies"
-               Entity="movie"
-               EntityId="movie?.Id" />
+<MyDetailsPage PageTitleText="Movie Details" EntityTitle="Movie" BasePath="/movies" Entity="movie" EntityId="movie?.Id">
+    <MyPropertyViewer Label="Name" Value="@movie.Name" />
+    <MyPropertyViewer Label="Release Date" Value="@movie.ValidFrom" />
+    <MyPropertyViewer Label="Genre" Value="@movie.Genre" />
+    <MyPropertyViewer Label="Price" Value="@movie.Price" />
+</MyDetailsPage>
 
 @code {
     private Movie movie;
