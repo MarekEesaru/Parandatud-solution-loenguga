@@ -5,26 +5,12 @@
 @inject IMoviesRepo repo
 @inject NavigationManager NavigationManager
 
-<PageTitle>Delete Movie</PageTitle>
-
-<h1>Delete</h1>
-
-<p>Are you sure you want to delete this?</p>
-<div>
-    <h2>Movie</h2>
-    <hr />
-    @if (movie is null)
-    {
-        <p><em>Loading...</em></p>
-    }
-    else {
-        <MyEntityViewer Entity="movie" />
-        <EditForm method="post" Model="movie" OnValidSubmit="deleteMovie" FormName="delete" Enhance>
-            <button type="submit" class="btn btn-danger" disabled="@(movie is null)">Delete</button> |
-            <a href="/movies">Back to List</a>
-        </EditForm>
-    }
-</div>
+<MyDeletePage PageTitleText="Delete Movie"
+              EntityTitle="Movie"
+              BasePath="/movies"
+              Entity="movie"
+              EntityId="movie?.Id"
+              OnValidSubmit="deleteMovie" />
 
 @code {
     private Movie movie;
