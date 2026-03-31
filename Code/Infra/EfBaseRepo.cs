@@ -30,9 +30,11 @@ namespace Abc.Infra
 
         public async Task<TEntity> UpdateAsync(TEntity e)
         {
-            db.Update(e);
+            var dbEntity = await db.Set<TEntity>().FindAsync(e.Id);
+            if (dbEntity is null) return null; // or throw
+            db.Entry(dbEntity).CurrentValues.SetValues(e);
             await db.SaveChangesAsync();
-            return e;
+            return dbEntity;
         }
         private async Task DeleteCoreAsync(Guid id)
         {

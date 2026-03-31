@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Abc.Data;
 
-public class  Country: NamedEntity
+public sealed class  Country: NamedEntity
 {
     public string OfficialName { get; set; } = "";
     public string NativeName { get; set; } = "";
