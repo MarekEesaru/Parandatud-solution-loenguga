@@ -1,10 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace Abc.Infra
-{
-    // Add profile data for application users by adding properties to the ApplicationUser class
+namespace Abc.Infra;
     public class ApplicationUser : IdentityUser
     {
     }
-
-}

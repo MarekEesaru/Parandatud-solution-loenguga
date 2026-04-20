@@ -1,11 +1,10 @@
 ﻿using Abc.Infra;
-using Abc.Soft.Web.Client.Pages;
+using Abc.Soft.Web;
 using Abc.Soft.Web.Components;
 using Abc.Soft.Web.Components.Account;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,9 +29,8 @@ builder.Services.AddAuthentication(options =>
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
-// Use the factory as the primary registration
-builder.Services.AddDbContextFactory<ApplicationDbContext>((sp, options) =>
-    options.UseSqlServer(connectionString));
+
+builder.Services.AddDbContextFactory<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
 // Provide a scoped ApplicationDbContext produced by the factory (for code that expects a scoped DbContext)
 builder.Services.AddScoped(sp =>
@@ -52,7 +50,9 @@ builder.Services.AddIdentityCore<ApplicationUser>(options =>
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 builder.Services.AddScoped<IMoviesRepo, MoviesRepo>();
 builder.Services.AddScoped<ICountriesRepo, CountriesRepo>();
-builder.Services.AddScoped<ICurrenciesRepo, CurrenicesRepo>();
+builder.Services.AddScoped<ICurrenciesRepo, CurrenciesRepo>();
+builder.Services.AddScoped<IMoniesRepo, MoniesRepo>();
+builder.Services.AddScoped<ICountryCurrenciesRepo, CountryCurrenciesRepo>();
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
