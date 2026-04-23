@@ -3,19 +3,19 @@
 @inject IMoniesRepo repo
 @inject NavigationManager NavigationManager
 
-<MyEditPage PageTitleText="Edit Money" EntityTitle="Money" Entity="item" BasePath="/monies" EntityId="@Id" OnValidSubmit="update" />
+<MyEditPage PageTitleText="Edit Money" EntityTitle="Money" Entity="money" BasePath="/monies" EntityId="@Id" OnValidSubmit="update" />
 
 @code {
     [SupplyParameterFromQuery] private Guid Id { get; set; }
-    [SupplyParameterFromForm] private Money item { get; set; }
+    [SupplyParameterFromForm] private Money money { get; set; }
     protected override async Task OnInitializedAsync()
     {
-        item ??= await repo.GetAsync(Id);
-        if (item is null) NavigationManager.NotFound();
+        money ??= await repo.GetAsync(Id);
+        if (money is null) NavigationManager.NotFound();
     }
     private async Task update()
     {
-        await repo.UpdateAsync(item);
+        await repo.UpdateAsync(money);
         NavigationManager.NavigateTo("/monies");
     }
 }

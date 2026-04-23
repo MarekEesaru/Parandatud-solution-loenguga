@@ -3,14 +3,14 @@
 @inject ICountriesRepo repo
 @inject NavigationManager NavigationManager
 
-<MyCreatePage Entity="item" EntityTitle="Country" BasePath="/countries" OnValidSubmit="add" />
+<MyCreatePage Entity="country" EntityTitle="Country" BasePath="/countries" OnValidSubmit="add" />
 
 @code {
-    [SupplyParameterFromForm] private Country item { get; set; } = default!;
-    protected override void OnInitialized() => item ??= new();
+    [SupplyParameterFromForm] private Country country { get; set; } = default!;
+    protected override void OnInitialized() => country ??= new();
     private async Task add()
     {
-        await repo.CreateAsync(item);
+        await repo.CreateAsync(country);
         NavigationManager.NavigateTo("/countries");
     }
 }

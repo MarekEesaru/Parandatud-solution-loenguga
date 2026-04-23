@@ -3,14 +3,14 @@
 @inject ICurrenciesRepo repo
 @inject NavigationManager NavigationManager
 
-<MyCreatePage Entity="item" EntityTitle="Currency" BasePath="/currencies" OnValidSubmit="add" />
+<MyCreatePage Entity="currency" EntityTitle="Currency" BasePath="/currencies" OnValidSubmit="add" />
 
 @code {
-    [SupplyParameterFromForm] private Currency item { get; set; } = default!;
-    protected override void OnInitialized() => item ??= new();
+    [SupplyParameterFromForm] private Currency currency { get; set; } = default!;
+    protected override void OnInitialized() => currency ??= new();
     private async Task add()
     {
-        await repo.CreateAsync(item);
+        await repo.CreateAsync(currency);
         NavigationManager.NavigateTo("/currencies");
     }
 }
