@@ -1,12 +1,7 @@
 ﻿@page "/movies"
 @attribute [ExcludeFromInteractiveRouting]
-@using Microsoft.AspNetCore.Components.QuickGrid
-@using Abc.Data
-@using Abc.Infra
-@using System.Linq
 @inject NavigationManager NavigationManager
 @inject IMoviesRepo repo
-
 
 <PageTitle>Movies</PageTitle>
 
@@ -16,18 +11,7 @@
     <a href="movies/create">Create New</a>
 </p>
 
-<QuickGrid Class="table" Items="Movies">
-    <PropertyColumn Property="movie => movie.Name" />
-    <PropertyColumn Property="movie => movie.ValidFrom" />
-    <PropertyColumn Property="movie => movie.Genre" />
-    <PropertyColumn Property="movie => movie.Price" />
-
-    <TemplateColumn Context="movie">
-        <a href="@($"movies/edit?id={movie.Id}")">Edit</a> |
-        <a href="@($"movies/details?id={movie.Id}")">Details</a> |
-        <a href="@($"movies/delete?id={movie.Id}")">Delete</a>
-    </TemplateColumn>
-</QuickGrid>
+<MyEntitiesTable TEntity="Movie" Entities="Movies" BasePath="movies" />
 
 @code {
     private IQueryable<Movie> Movies = Enumerable.Empty<Movie>().AsQueryable();

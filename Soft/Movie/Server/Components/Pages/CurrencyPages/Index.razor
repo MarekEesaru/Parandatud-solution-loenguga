@@ -1,9 +1,5 @@
 ﻿@page "/currencies"
 @attribute [ExcludeFromInteractiveRouting]
-@using Microsoft.AspNetCore.Components.QuickGrid
-@using Abc.Data
-@using Abc.Infra
-@using System.Linq
 @inject NavigationManager NavigationManager
 @inject ICurrenciesRepo repo
 
@@ -15,22 +11,7 @@
     <a href="currencies/create">Create New</a>
 </p>
 
-<QuickGrid Class="table" Items="Currencies">
-    <PropertyColumn Property="currency => currency.Code" />
-    <PropertyColumn Property="currency => currency.Name" />
-    <PropertyColumn Property="currency => currency.Details" />
-    <PropertyColumn Property="currency => currency.MajorUnitSymbol" />
-    <PropertyColumn Property="currency => currency.MinorUnitSymbol" />
-    <PropertyColumn Property="currency => currency.RatioOfMinorUnit" />
-    <PropertyColumn Property="currency => currency.NumericCode" />
-    <PropertyColumn Property="currency => currency.ValidFrom" />
-    <PropertyColumn Property="currency => currency.ValidTo" />
-    <TemplateColumn Context="currency">
-        <a href="@($"currencies/edit?id={currency.Id}")">Edit</a> |
-        <a href="@($"currencies/details?id={currency.Id}")">Details</a> |
-        <a href="@($"currencies/delete?id={currency.Id}")">Delete</a>
-    </TemplateColumn>
-</QuickGrid>
+<MyEntitiesTable TEntity="Currency" Entities="Currencies" BasePath="currencies" />
 
 @code {
     private IQueryable<Currency> Currencies = Enumerable.Empty<Currency>().AsQueryable();
