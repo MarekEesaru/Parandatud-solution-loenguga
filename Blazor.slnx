@@ -16,6 +16,9 @@
     <Project Path="Soft/Todo/Todo.Client/Todo.Client.csproj" />
     <Project Path="Soft/Todo/Todo/Todo.csproj" />
   </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path="Directory.Build.props" />
+  </Folder>
   <Folder Name="/Tests/">
     <Project Path="Tests/Tests.Aids/Aids.csproj" Id="1f5998ec-8381-413b-8c2e-92cbc8f63e68" />
     <Project Path="Tests/Tests.Data/Data.csproj" Id="4237c1e6-ae58-42f3-8fc4-97f05f873ed2" />

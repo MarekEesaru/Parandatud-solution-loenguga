@@ -2,29 +2,11 @@
 @attribute [ExcludeFromInteractiveRouting]
 @using Abc.Infra
 @using Abc.Data
+@using Abc.Shared.Pages
 @inject ICurrenciesRepo repo
 @inject NavigationManager NavigationManager
 
-<PageTitle>Create Currency</PageTitle>
-
-<h1>Create</h1>
-
-<h2>Currency</h2>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <EditForm method="post" Model="currency" OnValidSubmit="addCurrency" FormName="create" Enhance>
-            <DataAnnotationsValidator />
-            <ValidationSummary class="text-danger" role="alert"/>
-            <MyEntityEditor Entity="currency" />
-            <button type="submit" class="btn btn-primary">Create</button>
-        </EditForm>
-    </div>
-</div>
-
-<div>
-    <a href="/currencies">Back to List</a>
-</div>
+<MyCreatePage Entity="currency" EntityTitle="Currency" BasePath="/currencies" OnValidSubmit="addCurrency" />
 
 @code {
     [SupplyParameterFromForm] private Currency currency { get; set; } = default!;

@@ -8,6 +8,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-Abc_Soft_Todo-83679aec-403a-462c-8804-50e003c5a6f1</UserSecretsId>
     <BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>
+    <PackageId>Abc.Soft.Todo</PackageId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,5 +25,22 @@
   <ItemGroup>
     <ProjectReference Include="..\Todo.Client\Todo.Client.csproj" />
   </ItemGroup>
+
+  <!-- Ensure scoped css bundle placeholder files exist so DefineStaticWebAssets can resolve them
+       during build even if there are no scoped css files to concatenate. This allows the host
+       application to own the final bundle without failing the static web assets resolution. -->
+  <Target Name="EnsureScopedCssBundleFiles" BeforeTargets="ResolveBundledCssAssets">
+    <PropertyGroup>
+      <_ScopedCssIntermediatePath>$([System.IO.Path]::GetFullPath($(IntermediateOutputPath)scopedcss\))</_ScopedCssIntermediatePath>
+      <_ScopedCssOutputPath>$(_ScopedCssIntermediatePath)bundle\$(PackageId).styles.css</_ScopedCssOutputPath>
+      <_ScopedCssProjectOutputPath>$(_ScopedCssIntermediatePath)projectbundle\$(PackageId).bundle.scp.css</_ScopedCssProjectOutputPath>
+    </PropertyGroup>
+
+    <MakeDir Directories="$(_ScopedCssIntermediatePath)bundle\" />
+    <MakeDir Directories="$(_ScopedCssIntermediatePath)projectbundle\" />
+
+    <WriteLinesToFile File="$(_ScopedCssOutputPath)" Lines="" Overwrite="false" WriteOnlyWhenDifferent="false" Encoding="UTF-8" />
+    <WriteLinesToFile File="$(_ScopedCssProjectOutputPath)" Lines="" Overwrite="false" WriteOnlyWhenDifferent="false" Encoding="UTF-8" />
+  </Target>
 
 </Project>

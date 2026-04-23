@@ -8,6 +8,8 @@
     <RootNamespace>Abc.Soft.Web.Client</RootNamespace>
     <NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
     <StaticWebAssetProjectMode>Default</StaticWebAssetProjectMode>
+    <DisableScopedCssBundling>true</DisableScopedCssBundling>
+    <PackageId>Abc.Soft.Web.Client</PackageId>
     <BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>
   </PropertyGroup>
 

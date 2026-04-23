@@ -2,36 +2,17 @@
 @attribute [ExcludeFromInteractiveRouting]
 @using Abc.Infra
 @using Abc.Data
+@using Abc.Shared.Pages
 @inject ICurrenciesRepo repo
 @inject NavigationManager NavigationManager
 
-<PageTitle>Edit Currency</PageTitle>
-
-<h1>Edit</h1>
-
-<h2>Currency</h2>
-<hr />
-@if (currency is null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <div class="row">
-        <div class="col-md-4">
-            <EditForm method="post" Model="currency" OnValidSubmit="updateCurrency" FormName="edit" Enhance>
-                <DataAnnotationsValidator />
-                <ValidationSummary role="alert"/>
-                <input type="hidden" name="currency.Id" value="@currency.Id" />
-                <MyEntityEditor Entity="currency" />
-                <button type="submit" class="btn btn-primary">Save</button>
-            </EditForm>
-        </div>
-    </div>
-}
-<div>
-    <a href="/countries">Back to List</a>
-</div>
+<MyEditPage 
+    PageTitleText="Edit Currency" 
+    EntityTitle="@currency?.Name" 
+    Entity="currency" 
+    BasePath="/currencies"
+    EntityId="@Id"
+    OnValidSubmit="updateCurrency" />
 
 @code {
     [SupplyParameterFromQuery] private Guid Id { get; set; }
