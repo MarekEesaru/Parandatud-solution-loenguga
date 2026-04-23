@@ -1,13 +1,13 @@
-﻿@page "/countries/edit"
+﻿@page "/monies/edit"
 @attribute [ExcludeFromInteractiveRouting]
-@inject ICountriesRepo repo
+@inject IMoniesRepo repo
 @inject NavigationManager NavigationManager
 
-<MyEditPage PageTitleText="Edit Country" EntityTitle="@item?.Name" Entity="item" BasePath="/countries" EntityId="@Id" OnValidSubmit="update" />
+<MyEditPage PageTitleText="Edit Money" EntityTitle="Money" Entity="item" BasePath="/monies" EntityId="@Id" OnValidSubmit="update" />
 
 @code {
     [SupplyParameterFromQuery] private Guid Id { get; set; }
-    [SupplyParameterFromForm] private Country item { get; set; }
+    [SupplyParameterFromForm] private Money item { get; set; }
     protected override async Task OnInitializedAsync()
     {
         item ??= await repo.GetAsync(Id);
@@ -16,6 +16,6 @@
     private async Task update()
     {
         await repo.UpdateAsync(item);
-        NavigationManager.NavigateTo("/countries");
+        NavigationManager.NavigateTo("/monies");
     }
 }

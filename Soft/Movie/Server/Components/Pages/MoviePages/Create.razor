@@ -3,15 +3,14 @@
 @inject IMoviesRepo repo
 @inject NavigationManager NavigationManager
 
-<MyCreatePage Entity="movie" EntityTitle="Movie" BasePath="/movies" OnValidSubmit="addMovie" />
-
+<MyCreatePage Entity="item" EntityTitle="Movie" BasePath="/movies" OnValidSubmit="add" />
 
 @code {
-    [SupplyParameterFromForm] private Movie movie { get; set; } = default!;
-    protected override void OnInitialized() => movie ??= new();
-    private async Task addMovie() 
+    [SupplyParameterFromForm] private Movie item { get; set; } = default!;
+    protected override void OnInitialized() => item ??= new();
+    private async Task add() 
     {
-        await repo.CreateAsync(movie);
+        await repo.CreateAsync(item);
         NavigationManager.NavigateTo("/movies");
     }
 }

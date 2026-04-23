@@ -3,13 +3,13 @@
 @inject NavigationManager NavigationManager
 @inject IMoviesRepo repo
 
-<MyIndexPage TItem="Movie" PageTitleText="Movies" EntityTitle="Movies" Items="movies" BasePath="movies" />
+<MyIndexPage TItem="Movie" PageTitleText="Movies" EntityTitle="Movies" Items="items" BasePath="movies" />
 
 @code {
-    private IQueryable<Movie> movies = Enumerable.Empty<Movie>().AsQueryable();
+    private IQueryable<Movie> items = Enumerable.Empty<Movie>().AsQueryable();
     protected override async Task OnInitializedAsync()
     {
         if (repo is null) return;
-        movies = (await repo.GetAsync()).AsQueryable();
+        items = (await repo.GetAsync()).AsQueryable();
     }
 }

@@ -3,14 +3,14 @@
 @inject ICurrenciesRepo repo
 @inject NavigationManager NavigationManager
 
-<MyDetailsPage PageTitleText="Currency Details" EntityTitle="Currency" BasePath="/currencies"Entity="currency"EntityId="currency?.Id" />
+<MyDetailsPage PageTitleText="Currency Details" EntityTitle="Currency" BasePath="/currencies"Entity="item"EntityId="item?.Id" />
 
 @code {
-    private Currency currency;
+    private Currency item;
     [SupplyParameterFromQuery] private Guid Id { get; set; }
     protected override async Task OnInitializedAsync()
     {
-        currency = await repo.GetAsync(Id);
-        if (currency is null) NavigationManager.NotFound();
+        item = await repo.GetAsync(Id);
+        if (item is null) NavigationManager.NotFound();
     }
 }

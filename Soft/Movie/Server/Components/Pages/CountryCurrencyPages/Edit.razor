@@ -1,13 +1,13 @@
-﻿@page "/countries/edit"
+﻿@page "/countrycurrencies/edit"
 @attribute [ExcludeFromInteractiveRouting]
-@inject ICountriesRepo repo
+@inject ICountryCurrenciesRepo repo
 @inject NavigationManager NavigationManager
 
-<MyEditPage PageTitleText="Edit Country" EntityTitle="@item?.Name" Entity="item" BasePath="/countries" EntityId="@Id" OnValidSubmit="update" />
+<MyEditPage PageTitleText="Edit Country Currency" EntityTitle="Country Currency" Entity="item" BasePath="/countrycurrencies" EntityId="@Id" OnValidSubmit="update" />
 
 @code {
     [SupplyParameterFromQuery] private Guid Id { get; set; }
-    [SupplyParameterFromForm] private Country item { get; set; }
+    [SupplyParameterFromForm] private CountryCurrency item { get; set; }
     protected override async Task OnInitializedAsync()
     {
         item ??= await repo.GetAsync(Id);
@@ -16,6 +16,6 @@
     private async Task update()
     {
         await repo.UpdateAsync(item);
-        NavigationManager.NavigateTo("/countries");
+        NavigationManager.NavigateTo("/countrycurrencies");
     }
 }

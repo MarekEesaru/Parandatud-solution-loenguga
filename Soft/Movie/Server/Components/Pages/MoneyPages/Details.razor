@@ -1,12 +1,12 @@
-﻿@page "/countries/details"
+﻿@page "/monies/details"
 @attribute [ExcludeFromInteractiveRouting]
-@inject ICountriesRepo repo
+@inject IMoniesRepo repo
 @inject NavigationManager NavigationManager
 
-<MyDetailsPage PageTitleText="Country Details" EntityTitle="Country" BasePath="/=countries" Entity="item" EntityId="item?.Id" />
+<MyDetailsPage PageTitleText="Money Details" EntityTitle="Money" BasePath="/monies" Entity="item" EntityId="item?.Id" />
 
 @code {
-    private Country item;
+    private Money item;
     [SupplyParameterFromQuery] private Guid Id { get; set; }
     protected override async Task OnInitializedAsync()
     {

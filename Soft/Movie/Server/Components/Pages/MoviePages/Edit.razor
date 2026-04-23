@@ -3,25 +3,19 @@
 @inject IMoviesRepo repo
 @inject NavigationManager NavigationManager
 
-<MyEditPage 
-    PageTitleText="Edit Movie" 
-    EntityTitle="@movie?.Name" 
-    Entity="movie" 
-    BasePath="/movies"
-    EntityId="@Id"
-    OnValidSubmit="updateMovie" />
+<MyEditPage PageTitleText="Edit Movie" EntityTitle="@item?.Name" Entity="item" BasePath="/movies" EntityId="@Id" OnValidSubmit="update" />
 
 @code {
     [SupplyParameterFromQuery] private Guid Id { get; set; }
-    [SupplyParameterFromForm] private Movie movie { get; set; }
+    [SupplyParameterFromForm] private Movie item { get; set; }
     protected override async Task OnInitializedAsync()
     {
-        movie ??= await repo.GetAsync(Id);
-        if (movie is null) NavigationManager.NotFound();
+        item ??= await repo.GetAsync(Id);
+        if (item is null) NavigationManager.NotFound();
     }
-    private async Task updateMovie()
+    private async Task update()
     {
-        await repo.UpdateAsync(movie);
+        await repo.UpdateAsync(item);
         NavigationManager.NavigateTo("/movies");
     }
 }

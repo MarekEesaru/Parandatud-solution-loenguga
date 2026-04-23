@@ -3,25 +3,19 @@
 @inject ICurrenciesRepo repo
 @inject NavigationManager NavigationManager
 
-<MyEditPage 
-    PageTitleText="Edit Currency" 
-    EntityTitle="@currency?.Name" 
-    Entity="currency" 
-    BasePath="/currencies"
-    EntityId="@Id"
-    OnValidSubmit="updateCurrency" />
+<MyEditPage PageTitleText="Edit Currency" EntityTitle="@item?.Name" Entity="item" BasePath="/currencies" EntityId="@Id" OnValidSubmit="update" />
 
 @code {
     [SupplyParameterFromQuery] private Guid Id { get; set; }
-    [SupplyParameterFromForm] private Currency currency { get; set; }
+    [SupplyParameterFromForm] private Currency item { get; set; }
     protected override async Task OnInitializedAsync()
     {
-        currency ??= await repo.GetAsync(Id);
-        if (currency is null) NavigationManager.NotFound();
+        item ??= await repo.GetAsync(Id);
+        if (item is null) NavigationManager.NotFound();
     }
-    private async Task updateCurrency()
+    private async Task update()
     {
-        await repo.UpdateAsync(currency);
+        await repo.UpdateAsync(item);
         NavigationManager.NavigateTo("/currencies");
     }
 }

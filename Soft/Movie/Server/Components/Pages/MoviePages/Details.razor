@@ -3,19 +3,14 @@
 @inject IMoviesRepo repo
 @inject NavigationManager NavigationManager
 
-<MyDetailsPage PageTitleText="Movie Details" EntityTitle="Movie" BasePath="/movies" Entity="movie" EntityId="movie?.Id">
-    <MyPropertyViewer Label="Name" Value="@movie.Name" />
-    <MyPropertyViewer Label="Release Date" Value="@movie.ValidFrom" />
-    <MyPropertyViewer Label="Genre" Value="@movie.Genre" />
-    <MyPropertyViewer Label="Price" Value="@movie.Price" />
-</MyDetailsPage>
+<MyDetailsPage PageTitleText="Movie Details" EntityTitle="Movie" BasePath="/movies" Entity="item" EntityId="item?.Id" />
 
 @code {
-    private Movie movie;
+    private Movie item;
     [SupplyParameterFromQuery] private Guid Id { get; set; }
     protected override async Task OnInitializedAsync()
     {
-        movie = await repo.GetAsync(Id);
-        if (movie is null) NavigationManager.NotFound();
+        item = await repo.GetAsync(Id);
+        if (item is null) NavigationManager.NotFound();
     }
 }

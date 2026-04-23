@@ -1,12 +1,12 @@
-﻿@page "/movies/delete"
+﻿@page "/countrycurrencies/delete"
 @attribute [ExcludeFromInteractiveRouting]
-@inject IMoviesRepo repo
+@inject ICountryCurrenciesRepo repo
 @inject NavigationManager NavigationManager
 
-<MyDeletePage PageTitleText="Delete Movie" EntityTitle="Movie" BasePath="/movies" Entity="item" OnValidSubmit="delete" />
+<MyDeletePage PageTitleText="Delete Country Currency" EntityTitle="Country Currency" BasePath="/countrycurrencies" Entity="item" OnValidSubmit="delete" />
 
 @code {
-    private Movie item;
+    private CountryCurrency item;
     [SupplyParameterFromQuery] private Guid Id { get; set; }
     protected override async Task OnInitializedAsync()
     {
@@ -16,6 +16,6 @@
     private async Task delete()
     {
         await repo.DeleteAsync(item!.Id);
-        NavigationManager.NavigateTo("/movies");
+        NavigationManager.NavigateTo("/countrycurrencies");
     }
 }
