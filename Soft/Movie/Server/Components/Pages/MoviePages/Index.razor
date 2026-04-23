@@ -3,21 +3,13 @@
 @inject NavigationManager NavigationManager
 @inject IMoviesRepo repo
 
-<PageTitle>Movies</PageTitle>
-
-<h1>Movies</h1>
-
-<p>
-    <a href="movies/create">Create New</a>
-</p>
-
-<MyEntitiesTable TEntity="Movie" Entities="Movies" BasePath="movies" />
+<MyIndexPage TItem="Movie" PageTitleText="Movies" EntityTitle="Movies" Items="movies" BasePath="movies" />
 
 @code {
-    private IQueryable<Movie> Movies = Enumerable.Empty<Movie>().AsQueryable();
+    private IQueryable<Movie> movies = Enumerable.Empty<Movie>().AsQueryable();
     protected override async Task OnInitializedAsync()
     {
         if (repo is null) return;
-        Movies = (await repo.GetAsync()).AsQueryable();
+        movies = (await repo.GetAsync()).AsQueryable();
     }
 }

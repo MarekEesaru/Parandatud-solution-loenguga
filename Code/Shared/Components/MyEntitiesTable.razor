@@ -1,4 +1,4 @@
-﻿@typeparam TEntity where TEntity : NamedEntity
+﻿@typeparam TEntity where TEntity : BaseEntity
 <QuickGrid Class="table" Items="Entities">
     @foreach (var p in typeof(TEntity).GetProperties())
     {

@@ -3,20 +3,12 @@
 @inject NavigationManager NavigationManager
 @inject ICurrenciesRepo repo
 
-<PageTitle>Currencies</PageTitle>
-
-<h1>Currencies</h1>
-
-<p>
-    <a href="currencies/create">Create New</a>
-</p>
-
-<MyEntitiesTable TEntity="Currency" Entities="Currencies" BasePath="currencies" />
+<MyIndexPage TItem="Currency" PageTitleText="Currencies" EntityTitle="Currencies" Items="currencies" BasePath="currencies" />
 
 @code {
-    private IQueryable<Currency> Currencies = Enumerable.Empty<Currency>().AsQueryable();
+    private IQueryable<Currency> currencies = Enumerable.Empty<Currency>().AsQueryable();
     protected override async Task OnInitializedAsync() {
         if (repo is null) return;
-        Currencies = (await repo.GetAsync()).AsQueryable();
+        currencies = (await repo.GetAsync()).AsQueryable();
     }
 }

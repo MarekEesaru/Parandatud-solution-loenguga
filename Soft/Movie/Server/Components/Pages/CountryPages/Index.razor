@@ -3,20 +3,12 @@
 @inject NavigationManager NavigationManager
 @inject ICountriesRepo repo
 
-<PageTitle>Countries</PageTitle>
-
-<h1>Countries</h1>
-
-<p>
-    <a href="countries/create">Create New</a>
-</p>
-
-<MyEntitiesTable TEntity="Country" Entities="Countries" BasePath="countries" />
+<MyIndexPage TItem="Country" PageTitleText="Countries" EntityTitle="Countries" Items="countries" BasePath="countries" />
 
 @code {
-    private IQueryable<Country> Countries = Enumerable.Empty<Country>().AsQueryable();
+    private IQueryable<Country> countries = Enumerable.Empty<Country>().AsQueryable();
     protected override async Task OnInitializedAsync() {
         if (repo is null) return;
-        Countries = (await repo.GetAsync()).AsQueryable();
+        countries = (await repo.GetAsync()).AsQueryable();
     }
 }
