@@ -5,6 +5,7 @@
     <Nullable>disable</Nullable>
     <AssemblyName>Abc.Soft.Web</AssemblyName>
     <RootNamespace>Abc.Soft.Web</RootNamespace>
+	<PlatformTarget>AnyCPU</PlatformTarget>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-Abc_Soft_Web-cf382012-29e2-4fd3-924d-f54e44cfd53a</UserSecretsId>
     <BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>

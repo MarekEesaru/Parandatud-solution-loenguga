@@ -65,8 +65,9 @@ namespace Abc.Aids
             var ticks = Int64(minTicks, maxTicks);
             return new TimeSpan(ticks); ;
         }
-        public static object Object(Type t)
+        public static object Object(Type t, string[] exclude = null)
         {
+            exclude = exclude ?? [];
             var x = Nullable.GetUnderlyingType(t);
             if (x is not null) t = x;
             var o = Activator.CreateInstance(t);
@@ -74,6 +75,7 @@ namespace Abc.Aids
             {
                 if (!p.CanWrite) continue;
                 if (p.PropertyType.IsArray) continue;
+                if (exclude.Contains(p.Name)) continue;
                 var v = IsClass(p) ? Object(p.PropertyType) : Value(p.PropertyType);
                 p.SetValue(o, v);
             }

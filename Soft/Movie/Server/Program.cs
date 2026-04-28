@@ -8,8 +8,6 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddQuickGridEntityFrameworkAdapter();
-
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
@@ -30,9 +28,9 @@ builder.Services.AddAuthentication(options =>
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
 
-builder.Services.AddDbContextFactory<ApplicationDbContext>(options =>
-    options.UseSqlite(connectionString));
+builder.Services.AddDbContextFactory<ApplicationDbContext>(options => options.UseSqlite(connectionString));
 
+builder.Services.AddQuickGridEntityFrameworkAdapter();
 // Provide a scoped ApplicationDbContext produced by the factory (for code that expects a scoped DbContext)
 builder.Services.AddScoped(sp =>
     sp.GetRequiredService<IDbContextFactory<ApplicationDbContext>>().CreateDbContext());
@@ -54,12 +52,13 @@ builder.Services.AddScoped<ICountriesRepo, CountriesRepo>();
 builder.Services.AddScoped<ICurrenciesRepo, CurrenciesRepo>();
 builder.Services.AddScoped<IMoniesRepo, MoniesRepo>();
 builder.Services.AddScoped<ICountryCurrenciesRepo, CountryCurrenciesRepo>();
+
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-}
+using var scope = app.Services.CreateScope();
+var sp = scope.ServiceProvider;
+var db = sp.GetRequiredService<ApplicationDbContext>();
+await new SeedDb(db, 20).Seed();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
