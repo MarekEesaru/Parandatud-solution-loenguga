@@ -3,15 +3,19 @@
     @foreach (var p in typeof(TEntity).GetProperties())
     {
         @if (!show(p)) continue;
-        <TemplateColumn Title="@p.Name" Context="x">
-            @(value(p, x))
+        <TemplateColumn>
+            <HeaderTemplate>
+                 <a href="@headerHref(p.Name)">@p.Name</a>
+            </HeaderTemplate>
+            <ChildContent Context="y">
+                @(value(p, y))
+            </ChildContent>
         </TemplateColumn>
     }
-
-    <TemplateColumn Context="x">
-        <a href="@($"{BasePath}/edit?id={x.Id}")">Edit</a> |
-        <a href="@($"{BasePath}/details?id={x.Id}")">Details</a> |
-        <a href="@($"{BasePath}/delete?id={x.Id}")">Delete</a>
+    <TemplateColumn Context="y">
+        <a href="@($"{BasePath}/edit?id={y.Id}")">Edit</a> |
+        <a href="@($"{BasePath}/details?id={y.Id}")">Details</a> |
+        <a href="@($"{BasePath}/delete?id={y.Id}")">Delete</a>
     </TemplateColumn>
 </QuickGrid>
 
@@ -45,6 +49,7 @@
         if (t.IsClass) return false;
         return true;
     }
+    private string headerHref(string columnName) => $"{BasePath}?Sort={columnName}&Page=1&PageSize={query?.PageSize ?? 7}";
 }
 
 <style>

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Abc.Infra.Migrations
 {
     /// <inheritdoc />
-    public partial class v23042026 : Migration
+    public partial class v28042026 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -223,8 +223,8 @@ namespace Abc.Infra.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    CountryId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    CurrencyId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    CountryId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    CurrencyId = table.Column<Guid>(type: "TEXT", nullable: true),
                     ValidFrom = table.Column<DateTime>(type: "TEXT", nullable: true),
                     ValidTo = table.Column<DateTime>(type: "TEXT", nullable: true),
                     Timestamp = table.Column<byte[]>(type: "BLOB", rowVersion: true, nullable: true),
@@ -237,14 +237,12 @@ namespace Abc.Infra.Migrations
                         name: "FK_CountryCurrencies_Countries_CountryId",
                         column: x => x.CountryId,
                         principalTable: "Countries",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_CountryCurrencies_Currencies_CurrencyId",
                         column: x => x.CurrencyId,
                         principalTable: "Currencies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -253,7 +251,7 @@ namespace Abc.Infra.Migrations
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Amount = table.Column<decimal>(type: "TEXT", nullable: false),
-                    CurrencyId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    CurrencyId = table.Column<Guid>(type: "TEXT", nullable: true),
                     ValidFrom = table.Column<DateTime>(type: "TEXT", nullable: true),
                     ValidTo = table.Column<DateTime>(type: "TEXT", nullable: true),
                     Timestamp = table.Column<byte[]>(type: "BLOB", rowVersion: true, nullable: true)
@@ -265,8 +263,7 @@ namespace Abc.Infra.Migrations
                         name: "FK_Money_Currencies_CurrencyId",
                         column: x => x.CurrencyId,
                         principalTable: "Currencies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(

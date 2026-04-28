@@ -1,5 +1,4 @@
 using Abc.Data;
-using Abc.Infra;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
