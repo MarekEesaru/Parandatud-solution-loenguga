@@ -10,7 +10,7 @@
         <a href="@prevHref">Prev</a>
     }
 
-    <span>Page 1 / 20 </span>
+    <span>Page @Page / @totalPages() </span>
 
     @if (isLastPage)
     {
@@ -23,17 +23,34 @@
         <a href="@lastHref">Last</a>
     }
 
-    <span>Total: 100</span>
-
-    <span>Rows: 6, 15, 25, 50</span>
+    <span>Total: @TotalCount Rows: </span>
+    @foreach (var s in new[] { 6, 15, 25, 50 })
+    {
+        if (s == PageSize){
+            <span>@s</span>
+        }else{
+            <a href="@sizeHref(s)">@s</a>
+        }
+    }
 </div>
  @code
  {
     [Parameter] public string CurrentUri { get; set; }
-    private bool isFirstPage => true;
-    private bool isLastPage => false;
-    private string firstHref => CurrentUri;
-    private string prevHref => CurrentUri;
-    private string nextHref => CurrentUri;
-    private string lastHref => CurrentUri;
+    [Parameter] public int Page { get; set; } = 1;
+    [Parameter] public int PageSize { get; set; } = 1;
+    [Parameter] public int TotalCount { get; set; }
+    private int totalPages()
+    {
+        if (PageSize <= 0) return TotalCount;
+        var p = TotalCount / PageSize;
+        if (TotalCount % PageSize > 0) p++;
+        return p;
+    }
+    private bool isFirstPage => Page == 1;
+    private bool isLastPage => Page == totalPages();
+    private string firstHref => $"{CurrentUri}?Page=1&PageSize={PageSize}";
+    private string prevHref => $"{CurrentUri}?Page={Page - 1}&PageSize={PageSize}";
+    private string nextHref => $"{CurrentUri}?Page={Page + 1}&PageSize={PageSize}";
+    private string lastHref => $"{CurrentUri}?Page={totalPages()}&PageSize={PageSize}";
+    private string sizeHref(int s) => $"{CurrentUri}?Page=1&PageSize={s}";
  }

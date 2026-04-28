@@ -9,6 +9,7 @@ namespace Abc.Infra
     public interface IRepo<TEntity> where TEntity : BaseEntity
     {
         Task<TEntity> GetAsync(Guid id);
+        Task<int> CountAsync();
         Task<IEnumerable<TEntity>> GetAsync();
         Task<TEntity> CreateAsync(TEntity e);
         Task<TEntity> UpdateAsync(TEntity e);

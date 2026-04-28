@@ -15,16 +15,18 @@
     </TemplateColumn>
 </QuickGrid>
 
-<MyTablePageNav CurrentUri="@nav.Uri" />
+<MyTablePageNav TotalCount="@totalCount" CurrentUri="@nav.Uri" Page="2" PageSize="15"/>
 
 @code {
     private IQueryable<TEntity> Entities { get; set; }
     [Parameter] public IRepo<TEntity> Repo { get; set; }
     [Parameter] public string BasePath { get; set; }
     [Inject] private NavigationManager nav { get; set; }
+    private int totalCount;
     protected override async Task OnInitializedAsync()
     {
         if (Repo is null) return;
+        totalCount = await Repo.CountAsync();
         Entities = (await Repo.GetAsync()).AsQueryable();
     }
     private string value(PropertyInfo p, TEntity e){
