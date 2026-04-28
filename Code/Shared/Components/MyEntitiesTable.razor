@@ -5,7 +5,17 @@
         @if (!show(p)) continue;
         <TemplateColumn>
             <HeaderTemplate>
-                 <a href="@headerHref(p.Name)">@p.Name</a>
+                <div class="header-stack">
+                    <a href="@headerHref(p.Name)">@iconed(p.Name)</a>
+                    <form method="get" action="">
+                        <input type="hidden" name="sortDir" value="asc" />
+                        <input type="hidden" name="pageSize" value="7" />
+                        <input type="hidden" name="page" value="1" />
+                        <input type="hidden" name="sortBy" value="@p.Name" />
+                        <input type="search" class="form-control form-control-sm"
+                               name="search" value="" disabled="" placeholder="Search..." />
+                    </form>
+                </div>
             </HeaderTemplate>
             <ChildContent Context="y">
                 @(value(p, y))
@@ -28,6 +38,8 @@
     [Inject] private NavigationManager nav { get; set; }
     private int totalCount;
     private Query query;
+    private string icon => query?.SortDir == "asc" ? " ▲" : query?.SortDir == "desc" ? " ▼" : string.Empty;
+    private string iconed(string name) => (query?.SortBy == name) ? name + icon : name;
     protected override async Task OnInitializedAsync()
     {
         if (Repo is null) return;
@@ -49,7 +61,13 @@
         if (t.IsClass) return false;
         return true;
     }
-    private string headerHref(string columnName) => $"{BasePath}?SortBy={columnName}&Page=1&PageSize={query?.PageSize ?? 7}";
+    private string headerHref(string name)
+    {
+        var n = ((query?.SortBy == name) && (query?.SortDir == "desc")) ? null : name;
+        var d = query?.SortBy != name ? "asc" : "desc";
+        var r = $"{BasePath}?Page=1&PageSize={query?.PageSize ?? 7}";
+        return (n is null) ? r : r + $"&SortBy={n}&SortDir={d}";
+    }
 }
 
 <style>
