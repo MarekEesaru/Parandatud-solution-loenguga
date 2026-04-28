@@ -248,7 +248,7 @@ namespace Abc.Infra.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Monies",
+                name: "Money",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
@@ -260,9 +260,9 @@ namespace Abc.Infra.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Monies", x => x.Id);
+                    table.PrimaryKey("PK_Money", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Monies_Currencies_CurrencyId",
+                        name: "FK_Money_Currencies_CurrencyId",
                         column: x => x.CurrencyId,
                         principalTable: "Currencies",
                         principalColumn: "Id",
@@ -294,9 +294,9 @@ namespace Abc.Infra.Migrations
                         principalTable: "Countries",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Movies_Monies_MoneyId",
+                        name: "FK_Movies_Money_MoneyId",
                         column: x => x.MoneyId,
-                        principalTable: "Monies",
+                        principalTable: "Money",
                         principalColumn: "Id");
                 });
 
@@ -353,8 +353,8 @@ namespace Abc.Infra.Migrations
                 column: "CurrencyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Monies_CurrencyId",
-                table: "Monies",
+                name: "IX_Money_CurrencyId",
+                table: "Money",
                 column: "CurrencyId");
 
             migrationBuilder.CreateIndex(
@@ -405,7 +405,7 @@ namespace Abc.Infra.Migrations
                 name: "Countries");
 
             migrationBuilder.DropTable(
-                name: "Monies");
+                name: "Money");
 
             migrationBuilder.DropTable(
                 name: "Currencies");

@@ -1,9 +1,9 @@
-﻿@page "/monies/details"
+﻿@page "/money/details"
 @attribute [ExcludeFromInteractiveRouting]
-@inject IMoniesRepo repo
+@inject IMoneyRepo repo
 @inject NavigationManager NavigationManager
 
-<MyDetailsPage PageTitleText="Money Details" EntityTitle="Money" BasePath="/monies" Entity="item" EntityId="item?.Id" />
+<MyDetailsPage PageTitleText="Money Details" EntityTitle="Money" BasePath="/money" Entity="item" EntityId="item?.Id" />
 
 @code {
     private Money item;

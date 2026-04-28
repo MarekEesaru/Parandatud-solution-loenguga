@@ -22,5 +22,5 @@ public interface IRepo<TEntity> where TEntity : BaseEntity
 public interface IMoviesRepo : IRepo<Movie> { }
 public interface ICountriesRepo : IRepo<Country> { }
 public interface ICurrenciesRepo : IRepo<Currency> { }
-public interface IMoniesRepo : IRepo<Money> { }
+public interface IMoneyRepo : IRepo<Money> { }
 public interface ICountryCurrenciesRepo : IRepo<CountryCurrency> { }

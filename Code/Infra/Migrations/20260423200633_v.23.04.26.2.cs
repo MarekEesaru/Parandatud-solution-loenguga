@@ -20,12 +20,12 @@ namespace Abc.Infra.Migrations
                 table: "CountryCurrencies");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Monies_Currencies_CurrencyId",
-                table: "Monies");
+                name: "FK_Money_Currencies_CurrencyId",
+                table: "Money");
 
             migrationBuilder.AlterColumn<Guid>(
                 name: "CurrencyId",
-                table: "Monies",
+                table: "Money",
                 type: "TEXT",
                 nullable: true,
                 oldClrType: typeof(Guid),
@@ -62,8 +62,8 @@ namespace Abc.Infra.Migrations
                 principalColumn: "Id");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Monies_Currencies_CurrencyId",
-                table: "Monies",
+                name: "FK_Money_Currencies_CurrencyId",
+                table: "Money",
                 column: "CurrencyId",
                 principalTable: "Currencies",
                 principalColumn: "Id");
@@ -81,12 +81,12 @@ namespace Abc.Infra.Migrations
                 table: "CountryCurrencies");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Monies_Currencies_CurrencyId",
-                table: "Monies");
+                name: "FK_Money_Currencies_CurrencyId",
+                table: "Money");
 
             migrationBuilder.AlterColumn<Guid>(
                 name: "CurrencyId",
-                table: "Monies",
+                table: "Money",
                 type: "TEXT",
                 nullable: false,
                 defaultValue: new Guid("00000000-0000-0000-0000-000000000000"),
@@ -131,8 +131,8 @@ namespace Abc.Infra.Migrations
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Monies_Currencies_CurrencyId",
-                table: "Monies",
+                name: "FK_Money_Currencies_CurrencyId",
+                table: "Money",
                 column: "CurrencyId",
                 principalTable: "Currencies",
                 principalColumn: "Id",

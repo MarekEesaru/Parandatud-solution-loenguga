@@ -50,7 +50,7 @@ builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSe
 builder.Services.AddScoped<IMoviesRepo, MoviesRepo>();
 builder.Services.AddScoped<ICountriesRepo, CountriesRepo>();
 builder.Services.AddScoped<ICurrenciesRepo, CurrenciesRepo>();
-builder.Services.AddScoped<IMoniesRepo, MoniesRepo>();
+builder.Services.AddScoped<IMoneyRepo, MoneyRepo>();
 builder.Services.AddScoped<ICountryCurrenciesRepo, CountryCurrenciesRepo>();
 
 var app = builder.Build();
