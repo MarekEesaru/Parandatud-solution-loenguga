@@ -10,7 +10,7 @@ namespace Abc.Infra
         public Task DeleteAsync(Guid id) {return DeleteCoreAsync(id);}
         public async Task<TEntity> GetAsync(Guid id) {return await db.Set<TEntity>().FirstOrDefaultAsync(x => x.Id == id);}
         public async Task<IEnumerable<TEntity>> GetAsync() {return await GetAllCoreAsync();}
-        public async Task<TEntity> UpdateAsync(TEntity e) { var dbEntity = await db.Set<TEntity>().FindAsync(e.Id); if (dbEntity is null) return null; db.Entry(dbEntity).CurrentValues.SetValues(e); await db.SaveChangesAsync(); return dbEntity;}
+        public async Task<TEntity> UpdateAsync(TEntity e) { db.Update(e); await db.SaveChangesAsync(); return e;}
         private async Task DeleteCoreAsync(Guid id) 
         {
             var entity = await GetAsync(id);
@@ -20,7 +20,8 @@ namespace Abc.Infra
         }
         private async Task<IEnumerable<TEntity>> GetAllCoreAsync()
         {
-            return await db.Set<TEntity>().ToListAsync();
+            var q = db.Set<TEntity>().Skip(0).Take(5).OrderBy(x => x.ValidFrom).AsNoTracking();
+            return await q.ToListAsync();
         }
     }
 }
