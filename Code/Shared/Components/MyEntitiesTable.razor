@@ -69,6 +69,7 @@
         var n = ((query?.SortBy == name) && (query?.SortDir == "desc")) ? null : name;
         var d = query?.SortBy != name ? "asc" : "desc";
         var r = $"{BasePath}?Page=1&PageSize={query?.PageSize ?? 7}";
+        r = string.IsNullOrEmpty(query?.SearchStr) ? r : r += $"&SearchBy={query.SearchBy}&SearchStr={query.SearchStr}";
         return (n is null) ? r : r + $"&SortBy={n}&SortDir={d}";
     }
 }

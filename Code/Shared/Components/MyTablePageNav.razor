@@ -48,11 +48,12 @@
         return p;
     }
     private string sort => string.IsNullOrEmpty(Query?.SortBy) ? string.Empty : $"&SortBy={Query.SortBy}&SortDir={Query.SortDir}";
+    private string search => string.IsNullOrEmpty(Query?.SearchStr) ? string.Empty : $"&SearchBy={Query.SearchBy}&SearchStr={Query.SearchStr}";
     private bool isFirstPage => pageNo == 1;
     private bool isLastPage => pageNo == totalPages();
-    private string firstHref => $"{baseUri}?Page=1&PageSize={pageSize}{sort}";
-    private string prevHref => $"{baseUri}?Page={pageNo - 1}&PageSize={pageSize}{sort}";
-    private string nextHref => $"{baseUri}?Page={pageNo + 1}&PageSize={pageSize}{sort}";
-    private string lastHref => $"{baseUri}?Page={totalPages()}&PageSize={pageSize}{sort}";
-    private string sizeHref(int s) => $"{baseUri}?Page=1&PageSize={s}{sort}";
+    private string firstHref => $"{baseUri}?Page=1&PageSize={pageSize}{sort}{search}";
+    private string prevHref => $"{baseUri}?Page={pageNo - 1}&PageSize={pageSize}{sort}{search}";
+    private string nextHref => $"{baseUri}?Page={pageNo + 1}&PageSize={pageSize}{sort}{search}";
+    private string lastHref => $"{baseUri}?Page={totalPages()}&PageSize={pageSize}{sort}{search}";
+    private string sizeHref(int s) => $"{baseUri}?Page=1&PageSize={s}{sort}{search}";
  }

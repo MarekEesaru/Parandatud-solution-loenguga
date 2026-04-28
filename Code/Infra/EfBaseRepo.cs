@@ -11,7 +11,11 @@ namespace Abc.Infra
     {
         protected readonly TContext db = c;
         private IQueryable<TEntity> set => db.Set<TEntity>();
-        public async Task<int> CountAsync(Query q) => await set.CountAsync();
+        public async Task<int> CountAsync(Query q)
+        {
+            var r = addSearch(set, q);
+            return await r.CountAsync();
+        }
         public async Task<TEntity> CreateAsync(TEntity e) {await db.AddAsync(e); await db.SaveChangesAsync(); return e;}
         public Task DeleteAsync(Guid id) => DeleteCoreAsync(id);
         public async Task<TEntity> GetAsync(Guid id) => await set.FirstOrDefaultAsync(x => x.Id == id);
@@ -33,7 +37,9 @@ namespace Abc.Infra
         }
         private static IQueryable<TEntity> addSearch(IQueryable<TEntity> r, Query q)
         {
-            return r;
+            var key = searchBy(q.SearchBy, q.SearchStr);
+            if (key is null) return r;
+            return r.Where(key);
         }
         private static IQueryable<TEntity> addSort(IQueryable<TEntity> r, Query q)
         {
@@ -50,7 +56,7 @@ namespace Abc.Infra
         }
         private static readonly BindingFlags flags
         = BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance;
-        private static PropertyInfo getProp(string propName) => typeof(TEntity).GetProperty(propName, flags);
+        private static PropertyInfo getProp(string propName) => string.IsNullOrEmpty(propName) ? null : typeof(TEntity).GetProperty(propName, flags);
         private static Expression<Func<TEntity, object>> sortBy(string propName)
         {
             var p = getProp(propName);
@@ -60,6 +66,18 @@ namespace Abc.Infra
             var member = Expression.Property(parameter, p);
             var converted = Expression.Convert(member, typeof(object));
             return Expression.Lambda<Func<TEntity, object>>(converted, parameter);
+        }
+        private static Expression<Func<TEntity, bool>> searchBy(string searchBy, string searchStr)
+        {
+            var p = getProp(searchBy);
+            if (p?.PropertyType != typeof(string)) return null;
+            if (string.IsNullOrEmpty(searchStr)) return null;
+            var parameter = Expression.Parameter(typeof(TEntity), "x");
+            var member = Expression.Property(parameter, p);
+            var notNull = Expression.NotEqual(member, Expression.Constant(null, typeof(string)));
+            var contains = Expression.Call(member, nameof(string.Contains), Type.EmptyTypes, Expression.Constant(searchStr));
+            var body = Expression.AndAlso(notNull, contains);
+            return Expression.Lambda<Func<TEntity, bool>>(body, parameter);
         }
     }
 }
