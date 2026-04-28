@@ -15,22 +15,17 @@
     </TemplateColumn>
 </QuickGrid>
 
-<style>
-    .myTable {
-        table-layout: fixed;
-        width: 100%;
-        max-width: 100%;
-    }
-    .myTable td {
-        white-space: normal;
-        overflow-wrap: anywhere;
-        word-break: break-word;
-    }
-</style>
+
 
 @code {
-    [Parameter] public IQueryable<TEntity> Entities { get; set; }
+    private IQueryable<TEntity> Entities { get; set; }
+    [Parameter] public IRepo<TEntity> Repo { get; set; }
     [Parameter] public string BasePath { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        if (Repo is null) return;
+        Entities = (await Repo.GetAsync()).AsQueryable();
+    }
     private string value(PropertyInfo p, TEntity e){
         var v = p?.GetValue(e);
         return v?.ToString() ?? string.Empty;
@@ -45,3 +40,17 @@
         return true;
     }
 }
+
+<style>
+    .myTable {
+        table-layout: fixed;
+        width: 100%;
+        max-width: 100%;
+    }
+
+        .myTable td {
+            white-space: normal;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+</style>

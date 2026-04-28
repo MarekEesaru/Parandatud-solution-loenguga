@@ -3,12 +3,7 @@
 @inject NavigationManager NavigationManager
 @inject ICountriesRepo repo
 
-<MyIndexPage TItem="Country" PageTitleText="Countries" EntityTitle="Countries" Items="items" BasePath="countries" />
+<MyIndexPage TItem="Country" PageTitleText="Countries" EntityTitle="Countries" Repo="repo" BasePath="countries" />
 
 @code {
-    private IQueryable<Country> items = Enumerable.Empty<Country>().AsQueryable();
-    protected override async Task OnInitializedAsync() {
-        if (repo is null) return;
-        items = (await repo.GetAsync()).AsQueryable();
-    }
 }

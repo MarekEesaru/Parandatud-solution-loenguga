@@ -3,13 +3,7 @@
 @inject NavigationManager NavigationManager
 @inject IMoniesRepo repo
 
-<MyIndexPage TItem="Money" PageTitleText="Monies" EntityTitle="Monies" Items="item" BasePath="monies" />
+<MyIndexPage TItem="Money" PageTitleText="Monies" EntityTitle="Monies" Repo="repo" BasePath="monies" />
 
 @code {
-    private IQueryable<Money> item = Enumerable.Empty<Money>().AsQueryable();
-    protected override async Task OnInitializedAsync()
-    {
-        if (repo is null) return;
-        item = (await repo.GetAsync()).AsQueryable();
-    }
 }
