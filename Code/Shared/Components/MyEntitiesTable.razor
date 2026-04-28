@@ -49,7 +49,7 @@
         if (t.IsClass) return false;
         return true;
     }
-    private string headerHref(string columnName) => $"{BasePath}?Sort={columnName}&Page=1&PageSize={query?.PageSize ?? 7}";
+    private string headerHref(string columnName) => $"{BasePath}?SortBy={columnName}&Page=1&PageSize={query?.PageSize ?? 7}";
 }
 
 <style>

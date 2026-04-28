@@ -1,5 +1,8 @@
 ﻿using Abc.Data.Common;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
+using System.Reflection;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Abc.Infra
@@ -22,10 +25,29 @@ namespace Abc.Infra
         }
         private async Task<IEnumerable<TEntity>> GetAllCoreAsync(Query q)
         {
-            var s = (q.Page-1) * q.PageSize;
+            var s = (q.Page - 1) * q.PageSize;
             var t = q.PageSize;
-            var r = db.Set<TEntity>().Skip(s).Take(t).OrderBy(x => x.ValidTo).AsNoTracking();
+            var dir = q.SortDir;
+            var n = q.SortBy;
+            var key = (n is null) ? null : sortBy(n);
+            var r = key == null
+                ? db.Set<TEntity>().Skip(s).Take(t).AsNoTracking()
+                : (dir == "desc") 
+                   ? db.Set<TEntity>().Skip(s).Take(t).OrderByDescending(key).AsNoTracking()
+                   : db.Set<TEntity>().Skip(s).Take(t).OrderBy(key).AsNoTracking();
             return await r.ToListAsync();
+        }
+        private static readonly BindingFlags flags
+        = BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance;
+        private static Expression<Func<TEntity, object>> sortBy(string propName)
+        {
+            var p = typeof(TEntity).GetProperty(propName, flags);
+            if (p is null) return null;
+            if (string.IsNullOrEmpty(propName)) return null;
+            var parameter = Expression.Parameter(typeof(TEntity), "x");
+            var member = Expression.Property(parameter, p);
+            var converted = Expression.Convert(member, typeof(object));
+            return Expression.Lambda<Func<TEntity, object>>(converted, parameter);
         }
     }
 }
