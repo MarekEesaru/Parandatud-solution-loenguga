@@ -15,7 +15,7 @@
     </TemplateColumn>
 </QuickGrid>
 
-<MyTablePageNav TotalCount="@totalCount" CurrentUri="@nav.Uri" Page="2" PageSize="15"/>
+<MyTablePageNav TotalCount="@totalCount" CurrentUri="@nav.Uri" Page="2" PageSize="6"/>
 
 @code {
     private IQueryable<TEntity> Entities { get; set; }
@@ -26,6 +26,8 @@
     protected override async Task OnInitializedAsync()
     {
         if (Repo is null) return;
+        var uri = nav.ToAbsoluteUri(nav.Uri);
+        var query = new UrlParams(uri).Parse();
         totalCount = await Repo.CountAsync();
         Entities = (await Repo.GetAsync()).AsQueryable();
     }
