@@ -1,14 +1,39 @@
 ﻿<div class="d-flex align-items-center gap-2">
-    <span>First</span>
-    <span>Prev</span>
+    @if (isFirstPage)
+    {
+        <span>First</span>
+        <span>Prev</span>
+    }
+    else
+    {
+        <a href="@firstHref">First</a>
+        <a href="@prevHref">Prev</a>
+    }
 
     <span>Page 1 / 20 </span>
 
-    <span>Next</span>
-    <span>Last</span>
+    @if (isLastPage)
+    {
+        <span>Next</span>
+        <span>Last</span>
+    }
+    else
+    {
+        <a href="@nextHref">Next</a>
+        <a href="@lastHref">Last</a>
+    }
 
     <span>Total: 100</span>
 
     <span>Rows: 6, 15, 25, 50</span>
 </div>
- 
+ @code
+ {
+    [Parameter] public string CurrentUri { get; set; }
+    private bool isFirstPage => true;
+    private bool isLastPage => false;
+    private string firstHref => CurrentUri;
+    private string prevHref => CurrentUri;
+    private string nextHref => CurrentUri;
+    private string lastHref => CurrentUri;
+ }

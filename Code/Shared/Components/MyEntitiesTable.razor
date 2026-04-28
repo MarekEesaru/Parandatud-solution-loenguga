@@ -15,12 +15,13 @@
     </TemplateColumn>
 </QuickGrid>
 
-<MyTablePageNav/>
+<MyTablePageNav CurrentUri="@nav.Uri" />
 
 @code {
     private IQueryable<TEntity> Entities { get; set; }
     [Parameter] public IRepo<TEntity> Repo { get; set; }
     [Parameter] public string BasePath { get; set; }
+    [Inject] private NavigationManager nav { get; set; }
     protected override async Task OnInitializedAsync()
     {
         if (Repo is null) return;
