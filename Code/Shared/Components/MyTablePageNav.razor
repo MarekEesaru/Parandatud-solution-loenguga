@@ -10,7 +10,7 @@
         <a href="@prevHref">Prev</a>
     }
 
-    <span>Page @Page / @totalPages() </span>
+    <span>Page @pageNo / @totalPages() </span>
 
     @if (isLastPage)
     {
@@ -22,11 +22,10 @@
         <a href="@nextHref">Next</a>
         <a href="@lastHref">Last</a>
     }
-
     <span>Total: @TotalCount Rows: </span>
-    @foreach (var s in new[] { 6, 15, 25, 50 })
+    @foreach (var s in Query.PageSizes)
     {
-        if (s == PageSize){
+        if (s == pageSize){
             <span>@s</span>
         }else{
             <a href="@sizeHref(s)">@s</a>
@@ -36,21 +35,23 @@
  @code
  {
     [Parameter] public string CurrentUri { get; set; }
-    [Parameter] public int Page { get; set; } = 1;
-    [Parameter] public int PageSize { get; set; } = 1;
+    [Parameter] public Query Query { get; set; }
     [Parameter] public int TotalCount { get; set; }
+    private string baseUri => (CurrentUri ?? string.Empty).Split('?', 2)[0];
+    private int pageNo => Query?.Page ?? 1;
+    private int pageSize => Query?.PageSize ?? 1;
     private int totalPages()
     {
-        if (PageSize <= 0) return TotalCount;
-        var p = TotalCount / PageSize;
-        if (TotalCount % PageSize > 0) p++;
+        if (pageSize <= 0) return TotalCount;
+        var p = TotalCount / pageSize;
+        if (TotalCount % pageSize > 0) p++;
         return p;
     }
-    private bool isFirstPage => Page == 1;
-    private bool isLastPage => Page == totalPages();
-    private string firstHref => $"{CurrentUri}?Page=1&PageSize={PageSize}";
-    private string prevHref => $"{CurrentUri}?Page={Page - 1}&PageSize={PageSize}";
-    private string nextHref => $"{CurrentUri}?Page={Page + 1}&PageSize={PageSize}";
-    private string lastHref => $"{CurrentUri}?Page={totalPages()}&PageSize={PageSize}";
-    private string sizeHref(int s) => $"{CurrentUri}?Page=1&PageSize={s}";
+    private bool isFirstPage => pageNo == 1;
+    private bool isLastPage => pageNo == totalPages();
+    private string firstHref => $"{baseUri}?Page=1&PageSize={pageSize}";
+    private string prevHref => $"{baseUri}?Page={pageNo - 1}&PageSize={pageSize}";
+    private string nextHref => $"{baseUri}?Page={pageNo + 1}&PageSize={pageSize}";
+    private string lastHref => $"{baseUri}?Page={totalPages()}&PageSize={pageSize}";
+    private string sizeHref(int s) => $"{baseUri}?Page=1&PageSize={s}";
  }

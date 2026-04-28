@@ -1,12 +1,6 @@
-﻿namespace Abc.Shared.Code;
+﻿using Abc.Infra;
+namespace Abc.Shared.Code;
 
-public sealed class Query(Dictionary<string, string> d = null)
-{
-    public int Page => toInt(get(nameof(Page)), 1);
-    public int PageSize => toInt(get(nameof(PageSize)), 0);
-    private string get(string name) => (d ?? []).TryGetValue(name, out var s) ? s : null;
-    private static int toInt(string s, int def) => int.TryParse(s, out var i) ? i : def;
-}
 public class UrlParams(Uri url)
 {
     private readonly Dictionary<string, string> d = [];
