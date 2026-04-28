@@ -1,6 +1,8 @@
-﻿namespace Abc.Data.Common;
+﻿using Abc.Aids;
+
+namespace Abc.Data.Common;
 
 public abstract class DetailedEntity: BaseEntity
 {
-    public virtual string Details { get; set; } = "";
+    [Random(15, 31)] public virtual string Details { get; set; } = "";
 }
