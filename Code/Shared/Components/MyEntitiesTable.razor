@@ -7,13 +7,14 @@
             <HeaderTemplate>
                 <div class="header-stack">
                     <a href="@headerHref(p.Name)">@iconed(p.Name)</a>
-                    <form method="get" action="">
-                        <input type="hidden" name="sortDir" value="asc" />
-                        <input type="hidden" name="pageSize" value="7" />
-                        <input type="hidden" name="page" value="1" />
-                        <input type="hidden" name="sortBy" value="@p.Name" />
+                    <form method="get" action="@BasePath">
+                        <input type="hidden" name="@nameof(Query.SortDir)" value="@query.SortDir" />
+                        <input type="hidden" name="@nameof(Query.PageSize)" value="@query.PageSize" />
+                        <input type="hidden" name="@nameof(Query.Page)" value="1" />
+                        <input type="hidden" name="@nameof(Query.SortBy)" value="@query.SortBy" />
+                        <input type="hidden" name="@nameof(Query.SearchBy)" value="@p.Name" />
                         <input type="search" class="form-control form-control-sm"
-                               name="search" value="" disabled="" placeholder="Search..." />
+                               name="@nameof(Query.SearchStr)" value="@searchStr(p.Name)" disabled="@isDisabled(p)" placeholder="Search..." />
                     </form>
                 </div>
             </HeaderTemplate>
@@ -40,6 +41,8 @@
     private Query query;
     private string icon => query?.SortDir == "asc" ? " ▲" : query?.SortDir == "desc" ? " ▼" : string.Empty;
     private string iconed(string name) => (query?.SortBy == name) ? name + icon : name;
+    private string searchStr(string name) => (query?.SearchBy == name) ? query.SearchStr : "";
+    private bool isDisabled(PropertyInfo p) => p?.PropertyType != typeof(string);
     protected override async Task OnInitializedAsync()
     {
         if (Repo is null) return;
