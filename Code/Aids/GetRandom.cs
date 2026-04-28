@@ -38,11 +38,11 @@ namespace Abc.Aids
         public static float Float(float min = float.MinValue, float max = float.MaxValue) => (ulong)Double(min, max);
         public static char Char(char min, char max) => (char)Uint16(min, max);
         public static bool Bool() => r.Next(2) == 0;
-        public static string String(byte minLength = byte.MinValue, byte maxLength = byte.MaxValue)
+        public static string String(byte minLength = byte.MinValue, byte maxLength = byte.MaxValue, string chars = null)
         {
             var length = Uint8(minLength, maxLength);
             var s = new char[length];
-            for (var i = 0; i < length; i++) s[i] = Char('a', 'z');
+            for (var i = 0; i < length; i++) s[i] = (chars is null) ? Char('a', 'z') : chars[Uint8(0, (byte)chars.Length)];
             return new string(s);
         }
         public static DateTime DateTime(DateTime? min = null, DateTime? max = null)

@@ -9,7 +9,7 @@ namespace Abc.Data
 {
     public class Money : BaseEntity
     {
-        [Random(0, 1000)] public decimal Amount { get; set; }
+        [Random(0, 1000, 2)] public decimal Amount { get; set; }
         public Guid? CurrencyId { get; set; }
         public Currency Currency { get; set; }
     }
