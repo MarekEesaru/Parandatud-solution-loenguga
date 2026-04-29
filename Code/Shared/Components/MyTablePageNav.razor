@@ -47,13 +47,11 @@
         if (TotalCount % pageSize > 0) p++;
         return p;
     }
-    private string sort => string.IsNullOrEmpty(Query?.SortBy) ? string.Empty : $"&SortBy={Query.SortBy}&SortDir={Query.SortDir}";
-    private string search => string.IsNullOrEmpty(Query?.SearchStr) ? string.Empty : $"&SearchBy={Query.SearchBy}&SearchStr={Query.SearchStr}";
     private bool isFirstPage => pageNo == 1;
     private bool isLastPage => pageNo == totalPages();
-    private string firstHref => $"{baseUri}?Page=1&PageSize={pageSize}{sort}{search}";
-    private string prevHref => $"{baseUri}?Page={pageNo - 1}&PageSize={pageSize}{sort}{search}";
-    private string nextHref => $"{baseUri}?Page={pageNo + 1}&PageSize={pageSize}{sort}{search}";
-    private string lastHref => $"{baseUri}?Page={totalPages()}&PageSize={pageSize}{sort}{search}";
-    private string sizeHref(int s) => $"{baseUri}?Page=1&PageSize={s}{sort}{search}";
+    private string firstHref => Query.Href(baseUri, 1, pageSize);
+    private string prevHref => Query.Href(baseUri, pageNo - 1, pageSize);
+    private string nextHref => Query.Href(baseUri, pageNo + 1, pageSize);
+    private string lastHref => Query.Href(baseUri, totalPages(), pageSize);
+    private string sizeHref(int s) => Query.Href(baseUri, 1, s);
  }
