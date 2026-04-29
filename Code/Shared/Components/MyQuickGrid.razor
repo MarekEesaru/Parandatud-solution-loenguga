@@ -2,7 +2,7 @@
 <QuickGrid Class="table myTable" Items="Entities">
     @foreach (var p in typeof(TEntity).GetProperties())
     {
-        @if (!show(p)) continue;
+        @if (!MyGridAids.Show(p)) continue;
         <TemplateColumn>
             <HeaderTemplate>
                 @if (ShowHeader && ShowMyHeader)
@@ -12,7 +12,7 @@
                 else if (ShowHeader) { @p.Name }
             </HeaderTemplate>
             <ChildContent Context="y">
-                @(value(p, y))
+                @(MyGridAids.Value(p, y))
             </ChildContent>
         </TemplateColumn>
     }
@@ -27,36 +27,9 @@
     [Parameter] public IQueryable<TEntity> Entities { get; set; }
     [Parameter] public Query Query { get; set; }
     [Parameter] public string BasePath { get; set; }
-    [Parameter] public IRepo<TEntity> Repo { get; set; }
     [Parameter] public bool ShowHeader { get; set; } = true;
     [Parameter] public bool ShowMyHeader { get; set; } = true;
     [Parameter] public bool ShowButtons { get; set; } = true;
-    private bool show(PropertyInfo p)
-    {
-        if (p is null) return false;
-        if (p.Name == nameof(NamedEntity.Id)) return false;
-        var t = p?.PropertyType;
-        if (t == typeof(string)) return true;
-        if (typeof(IEnumerable).IsAssignableFrom(t)) return false;
-        if (t.IsClass) return false;
-        return true;
-    }
-    private string value(PropertyInfo p, TEntity e)
-    {
-        var v = isSelect(p) ? getSelectValue(p, e) : p?.GetValue(e);
-        return v?.ToString() ?? string.Empty;
-    }
-    private bool isSelect(PropertyInfo p) => p?.GetCustomAttribute<SelectAttribute>() != null;
-    private async Task<string> getSelectValue(PropertyInfo p, TEntity e)
-    {
-        var a = p?.GetCustomAttribute<SelectAttribute>();
-        var id = p?.GetValue(e) as Guid?;
-        if (id is null) return string.Empty;
-        var t = a?.EntityType;
-        var entity = await Repo.GetAsync(id ?? Guid.Empty);
-        var pi = entity?.GetType().GetProperty(a?.DisplayProperty ?? string.Empty);
-        return pi?.GetValue(entity)?.ToString() ?? string.Empty;
-    }
 }
 <style>
     .myTable {

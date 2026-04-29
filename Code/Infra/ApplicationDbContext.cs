@@ -11,5 +11,10 @@ namespace Abc.Infra
         public DbSet<Currency> Currencies { get; set; } = default!;
         public DbSet<Money> Money { get; set; } = default!;
         public DbSet<CountryCurrency> CountryCurrencies { get; set; } = default!;
+        protected override void OnModelCreating(ModelBuilder b)
+        {
+            base.OnModelCreating(b);
+            b.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+        }
     }
 }

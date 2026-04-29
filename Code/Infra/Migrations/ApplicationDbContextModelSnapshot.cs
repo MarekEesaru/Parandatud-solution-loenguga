@@ -15,7 +15,7 @@ namespace Abc.Infra.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "10.0.7");
+            modelBuilder.HasAnnotation("ProductVersion", "10.0.5");
 
             modelBuilder.Entity("Abc.Data.Country", b =>
                 {
@@ -153,7 +153,7 @@ namespace Abc.Infra.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("Amount")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<Guid?>("CurrencyId")
                         .HasColumnType("TEXT");

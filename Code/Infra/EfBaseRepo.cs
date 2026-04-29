@@ -10,15 +10,15 @@ namespace Abc.Infra
     public class EfBaseRepo<TContext, TEntity> (TContext c) : IRepo<TEntity> where TContext : DbContext where TEntity : BaseEntity
     {
         protected readonly TContext db = c;
-        private IQueryable<TEntity> set => db.Set<TEntity>();
+        protected virtual IQueryable<TEntity> Query() => db.Set<TEntity>();
         public async Task<int> CountAsync(Query q)
         {
-            var r = addSearch(set, q);
+            var r = addSearch(Query(), q);
             return await r.CountAsync();
         }
         public async Task<TEntity> CreateAsync(TEntity e) {await db.AddAsync(e); await db.SaveChangesAsync(); return e;}
         public Task DeleteAsync(Guid id) => DeleteCoreAsync(id);
-        public async Task<TEntity> GetAsync(Guid id) => await set.FirstOrDefaultAsync(x => x.Id == id);
+        public async Task<TEntity> GetAsync(Guid id) => await Query().FirstOrDefaultAsync(x => x.Id == id);
         public async Task<IEnumerable<TEntity>> GetAsync(Query q) => await GetAllCoreAsync(q);
         public async Task<TEntity> UpdateAsync(TEntity e) { db.Update(e); await db.SaveChangesAsync(); return e;}
         private async Task DeleteCoreAsync(Guid id) 
@@ -30,7 +30,7 @@ namespace Abc.Infra
         }
         private async Task<IEnumerable<TEntity>> GetAllCoreAsync(Query q)
         {
-            var r = addSearch(set, q);
+            var r = addSearch(Query(), q);
             r = addSort(r, q);
             r = addPagging(r, q);
             return await r.AsNoTracking().ToListAsync();

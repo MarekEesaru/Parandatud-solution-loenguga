@@ -9,7 +9,7 @@
         <a href="@firstHref">First</a>
         <a href="@prevHref">Prev</a>
     }
-
+    
     <span>Page @pageNo / @totalPages() </span>
 
     @if (isLastPage)
@@ -22,12 +22,16 @@
         <a href="@nextHref">Next</a>
         <a href="@lastHref">Last</a>
     }
+    
     <span>Total: @TotalCount Rows: </span>
     @foreach (var s in Query.PageSizes)
     {
-        if (s == pageSize){
+        if (s == pageSize)
+        {
             <span>@s</span>
-        }else{
+        }
+        else
+        {
             <a href="@sizeHref(s)">@s</a>
         }
     }

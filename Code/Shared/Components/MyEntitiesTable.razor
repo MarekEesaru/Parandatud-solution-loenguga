@@ -1,5 +1,5 @@
 ﻿@typeparam TEntity where TEntity : BaseEntity
-<MyQuickGrid TEntity="TEntity" Repo="@Repo" Entities="@Entities" BasePath="@BasePath" Query="@query"/>
+<MyQuickGrid Entities="@Entities" BasePath="@BasePath" Query="@query"/>
 @if (isSelected(selectedItem))
 {
     foreach (var c in new RelatedLists(selectedItem))
@@ -14,11 +14,11 @@
             <QuickGrid Class="table myTable" Items="items">
                 @foreach (var p in cols)
                 {
-                    @if (!show(p)) continue;
+                    @if (!MyGridAids.Show(p)) continue;
                     <TemplateColumn>
                         <HeaderTemplate>@p.Name</HeaderTemplate>
                         <ChildContent Context="y">
-                            @(p.GetValue(y)?.ToString() ?? string.Empty)
+                            @(MyGridAids.Value(p, y))
                         </ChildContent>
                     </TemplateColumn>
                 }
@@ -28,7 +28,7 @@
 }
 @if (Others.Any())
 {
-    <MyQuickGrid TEntity="TEntity" Repo="@Repo" Entities="@Others" BasePath="@BasePath" Query="@query" ShowHeader="@false"/>
+    <MyQuickGrid  Entities="@Others" BasePath="@BasePath" Query="@query" ShowHeader="@false"/>
 }
 <MyTablePageNav Query="@query" TotalCount="@totalCount" CurrentUri="@nav.Uri" />
 
@@ -59,7 +59,7 @@
                 continue;
             }
             entities.Add(e);
-            if (e.Id.ToString() != query.Selected) toOthers = true;
+            if (e.Id.ToString() != query.Selected) continue;
             toOthers = true;
             selectedItem = e;
         }
@@ -68,14 +68,40 @@
     }
     private bool isSelected(TEntity e) => query.Selected == e?.Id.ToString();
     private string closHref(TEntity e) => query.Href(BasePath, e.Id);
-    private bool show(PropertyInfo p)
-    {
-        if (p is null) return false;
-        if (p.Name == nameof(NamedEntity.Id)) return false;
-        var t = p?.PropertyType;
-        if (t == typeof(string)) return true;
-        if (typeof(IEnumerable).IsAssignableFrom(t)) return false;
-        if (t.IsClass) return false;
-        return true;
-    }
 }
+<style>
+    .myTable {
+        table-layout: fixed;
+        width: 100%;
+        max-width: 100%;
+    }
+
+        .myTable td {
+            white-space: normal;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+
+    .panel {
+        margin: .5rem 0;
+        padding: .75rem;
+        background: #fafafa;
+        border: 1px solid #dee2e6;
+        border-radius: .375rem;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: .5rem;
+        font-weight: 600;
+    }
+
+    .close {
+        text-decoration: none;
+        color: inherit;
+        font-size: 1.2rem;
+        line-height: 1;
+    }
+</style>

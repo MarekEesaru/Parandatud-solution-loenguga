@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Abc.Infra.Migrations
 {
     /// <inheritdoc />
-    public partial class v28042026 : Migration
+    public partial class v290426 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -69,28 +69,6 @@ namespace Abc.Infra.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Countries", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Currencies",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    NumericCode = table.Column<string>(type: "TEXT", nullable: true),
-                    MajorUnitSymbol = table.Column<string>(type: "TEXT", nullable: true),
-                    MinorUnitSymbol = table.Column<string>(type: "TEXT", nullable: true),
-                    RatioOfMinorUnit = table.Column<double>(type: "REAL", nullable: false),
-                    IsIsoCurrency = table.Column<bool>(type: "INTEGER", nullable: false),
-                    ValidFrom = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    ValidTo = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    Timestamp = table.Column<byte[]>(type: "BLOB", rowVersion: true, nullable: true),
-                    Details = table.Column<string>(type: "TEXT", nullable: true),
-                    Name = table.Column<string>(type: "TEXT", nullable: true),
-                    Code = table.Column<string>(type: "TEXT", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Currencies", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -219,6 +197,34 @@ namespace Abc.Infra.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Currencies",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    NumericCode = table.Column<string>(type: "TEXT", nullable: true),
+                    MajorUnitSymbol = table.Column<string>(type: "TEXT", nullable: true),
+                    MinorUnitSymbol = table.Column<string>(type: "TEXT", nullable: true),
+                    RatioOfMinorUnit = table.Column<double>(type: "REAL", nullable: false),
+                    IsIsoCurrency = table.Column<bool>(type: "INTEGER", nullable: false),
+                    CountryId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    ValidFrom = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    ValidTo = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    Timestamp = table.Column<byte[]>(type: "BLOB", rowVersion: true, nullable: true),
+                    Details = table.Column<string>(type: "TEXT", nullable: true),
+                    Name = table.Column<string>(type: "TEXT", nullable: true),
+                    Code = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Currencies", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Currencies_Countries_CountryId",
+                        column: x => x.CountryId,
+                        principalTable: "Countries",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CountryCurrencies",
                 columns: table => new
                 {
@@ -250,7 +256,7 @@ namespace Abc.Infra.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Amount = table.Column<decimal>(type: "TEXT", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(18, 2)", nullable: false),
                     CurrencyId = table.Column<Guid>(type: "TEXT", nullable: true),
                     ValidFrom = table.Column<DateTime>(type: "TEXT", nullable: true),
                     ValidTo = table.Column<DateTime>(type: "TEXT", nullable: true),
@@ -350,6 +356,11 @@ namespace Abc.Infra.Migrations
                 column: "CurrencyId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Currencies_CountryId",
+                table: "Currencies",
+                column: "CountryId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Money_CurrencyId",
                 table: "Money",
                 column: "CurrencyId");
@@ -399,13 +410,13 @@ namespace Abc.Infra.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Countries");
-
-            migrationBuilder.DropTable(
                 name: "Money");
 
             migrationBuilder.DropTable(
                 name: "Currencies");
+
+            migrationBuilder.DropTable(
+                name: "Countries");
         }
     }
 }
