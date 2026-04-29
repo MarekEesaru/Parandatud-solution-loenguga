@@ -36,11 +36,37 @@
         }
     </TemplateColumn>
 </QuickGrid>
-
+@if (Others.Any())
+{
+    <QuickGrid Class="table myTable" Items="Others">
+        @foreach (var p in typeof(TEntity).GetProperties())
+        {
+            @if (!show(p)) continue;
+            <TemplateColumn>
+                <ChildContent Context="y">
+                    @(value(p, y))
+                </ChildContent>
+            </TemplateColumn>
+        }
+        <TemplateColumn Context="y">
+            <a href="@($"{BasePath}/edit?id={y.Id}")">Edit</a> |
+            <a href="@($"{BasePath}/details?id={y.Id}")">Details</a> |
+            <a href="@($"{BasePath}/delete?id={y.Id}")">Delete</a>
+            @if (hasCollection)
+            {
+                <span> | </span>
+                <a href="@collectionHref(y)">
+                    @(isCollectionVisible(y) ? "Close" : "Select")
+                </a>
+            }
+        </TemplateColumn>
+    </QuickGrid>
+}
 <MyTablePageNav Query="@query" TotalCount="@totalCount" CurrentUri="@nav.Uri" />
 
 @code {
     private IQueryable<TEntity> Entities { get; set; }
+    private IQueryable<TEntity> Others { get; set; }
     [Parameter] public IRepo<TEntity> Repo { get; set; }
     [Parameter] public string BasePath { get; set; }
     [Inject] private NavigationManager nav { get; set; }
@@ -57,7 +83,22 @@
         var uri = nav.ToAbsoluteUri(nav.Uri);
         query = new UrlParams(uri).Parse();
         totalCount = await Repo.CountAsync(query);
-        Entities = (await Repo.GetAsync(query)).AsQueryable();
+        var toOthers = false;
+        var entities = new List<TEntity>();
+        var others = new List<TEntity>();
+        var all = (await Repo.GetAsync(query)).ToList();
+        foreach (var e in all)
+        {
+            if (toOthers)
+            {
+                others.Add(e);
+                continue;
+            }
+            entities.Add(e);
+            if (e.Id.ToString() != query.Selected) toOthers = true;
+        }
+        Entities = entities.AsQueryable();
+        Others = others.AsQueryable();
     }
     private string value(PropertyInfo p, TEntity e){
         var v = isSelect(p) ? getSelectValue(p,e) : p?.GetValue(e);
@@ -99,7 +140,7 @@
         return e != null && e.IsClass && e != typeof(string);
     }
     private string collectionHref(TEntity e) => query.Href(BasePath, e.Id);
-    private bool isCollectionVisible(TEntity e) => false;
+    private bool isCollectionVisible(TEntity e) => query.Selected == e.Id.ToString();
 }
 
 <style>
