@@ -3,14 +3,14 @@
 @inject IMoneyRepo repo
 @inject NavigationManager NavigationManager
 
-<MyCreatePage Entity="money" EntityTitle="Money" BasePath="/money" OnValidSubmit="add" />
+<MyCreatePage Entity="item" EntityTitle="Money" BasePath="/money" OnValidSubmit="add" />
 
 @code {
-    [SupplyParameterFromForm] private Money money { get; set; } = default!;
-    protected override void OnInitialized() => money ??= new();
+    [SupplyParameterFromForm(Name = nameof(Money))] private Money item { get; set; } = default!;
+    protected override void OnInitialized() => item ??= new();
     private async Task add() 
     {
-        await repo.CreateAsync(money);
+        await repo.CreateAsync(item);
         NavigationManager.NavigateTo("/money");
     }
 }

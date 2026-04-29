@@ -5,18 +5,7 @@
         @if (!show(p)) continue;
         <TemplateColumn>
             <HeaderTemplate>
-                <div class="header-stack">
-                    <a href="@headerHref(p.Name)">@iconed(p.Name)</a>
-                    <form method="get" action="@BasePath">
-                        <input type="hidden" name="@nameof(Query.SortDir)" value="@query.SortDir" />
-                        <input type="hidden" name="@nameof(Query.PageSize)" value="@query.PageSize" />
-                        <input type="hidden" name="@nameof(Query.Page)" value="1" />
-                        <input type="hidden" name="@nameof(Query.SortBy)" value="@query.SortBy" />
-                        <input type="hidden" name="@nameof(Query.SearchBy)" value="@p.Name" />
-                        <input type="search" class="form-control form-control-sm"
-                               name="@nameof(Query.SearchStr)" value="@searchStr(p.Name)" disabled="@isDisabled(p)" placeholder="Search..." />
-                    </form>
-                </div>
+                <MyTableHeader Query="@query" BasePate="@BasePath" PropertyInfo="@p" />
             </HeaderTemplate>
             <ChildContent Context="y">
                 @(value(p, y))
@@ -24,16 +13,7 @@
         </TemplateColumn>
     }
     <TemplateColumn Context="y">
-        <a href="@($"{BasePath}/edit?id={y.Id}")">Edit</a> |
-        <a href="@($"{BasePath}/details?id={y.Id}")">Details</a> |
-        <a href="@($"{BasePath}/delete?id={y.Id}")">Delete</a>
-        @if (hasCollection)
-        {
-            <span> | </span>
-            <a href="@collectionHref(y)">
-                @(isCollectionVisible(y) ? "Close" : "Select")
-            </a>
-        }
+        <MyTableRowButtons TEntity="TEntity" Item="@y" BasePath="@BasePath" Query="@query" />
     </TemplateColumn>
 </QuickGrid>
 @if (Others.Any())
@@ -49,16 +29,7 @@
             </TemplateColumn>
         }
         <TemplateColumn Context="y">
-            <a href="@($"{BasePath}/edit?id={y.Id}")">Edit</a> |
-            <a href="@($"{BasePath}/details?id={y.Id}")">Details</a> |
-            <a href="@($"{BasePath}/delete?id={y.Id}")">Delete</a>
-            @if (hasCollection)
-            {
-                <span> | </span>
-                <a href="@collectionHref(y)">
-                    @(isCollectionVisible(y) ? "Close" : "Select")
-                </a>
-            }
+            <MyTableRowButtons TEntity="TEntity" Item="@y" BasePath="@BasePath" Query="@query" />
         </TemplateColumn>
     </QuickGrid>
 }
@@ -73,10 +44,6 @@
     [Inject] private ApplicationDbContext db { get; set; }
     private int totalCount;
     private Query query;
-    private string icon => query?.SortDir == "asc" ? " ▲" : query?.SortDir == "desc" ? " ▼" : string.Empty;
-    private string iconed(string name) => (query?.SortBy == name) ? name + icon : name;
-    private string searchStr(string name) => (query?.SearchBy == name) ? query.SearchStr : "";
-    private bool isDisabled(PropertyInfo p) => p?.PropertyType != typeof(string);
     protected override async Task OnInitializedAsync()
     {
         if (Repo is null) return;
@@ -125,22 +92,6 @@
         if (t.IsClass) return false;
         return true;
     }
-    private string headerHref(string name)
-    {
-        var n = ((query?.SortBy == name) && (query?.SortDir == "desc")) ? null : name;
-        var d = query?.SortBy != name ? "asc" : "desc";
-        var r = $"{BasePath}?Page=1&PageSize={query?.PageSize ?? 7}";
-        r = string.IsNullOrEmpty(query?.SearchStr) ? r : r += $"&SearchBy={query.SearchBy}&SearchStr={query.SearchStr}";
-        return (n is null) ? r : r + $"&SortBy={n}&SortDir={d}";
-    }
-    private bool hasCollection => typeof(TEntity).GetProperties().Any(p => typeof(IEnumerable).IsAssignableFrom(p.PropertyType) && isCollectionOfClasses(p.PropertyType));
-    private bool isCollectionOfClasses(Type t)
-    {
-        var e = t.IsGenericType ? t.GetGenericArguments()[0] : t.GetElementType();
-        return e != null && e.IsClass && e != typeof(string);
-    }
-    private string collectionHref(TEntity e) => query.Href(BasePath, e.Id);
-    private bool isCollectionVisible(TEntity e) => query.Selected == e.Id.ToString();
 }
 
 <style>
