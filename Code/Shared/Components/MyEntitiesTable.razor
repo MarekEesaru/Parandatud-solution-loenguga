@@ -1,37 +1,8 @@
 ﻿@typeparam TEntity where TEntity : BaseEntity
-<QuickGrid Class="table myTable" Items="Entities">
-    @foreach (var p in typeof(TEntity).GetProperties())
-    {
-        @if (!show(p)) continue;
-        <TemplateColumn>
-            <HeaderTemplate>
-                <MyTableHeader Query="@query" BasePate="@BasePath" PropertyInfo="@p" />
-            </HeaderTemplate>
-            <ChildContent Context="y">
-                @(value(p, y))
-            </ChildContent>
-        </TemplateColumn>
-    }
-    <TemplateColumn Context="y">
-        <MyTableRowButtons TEntity="TEntity" Item="@y" BasePath="@BasePath" Query="@query" />
-    </TemplateColumn>
-</QuickGrid>
+<MyQuickGrid TEntity="TEntity" Repo="@Repo" Entities="@Entities" BasePath="@BasePath" Query="@query"/>
 @if (Others.Any())
 {
-    <QuickGrid Class="table myTable" Items="Others">
-        @foreach (var p in typeof(TEntity).GetProperties())
-        {
-            @if (!show(p)) continue;
-            <TemplateColumn>
-                <ChildContent Context="y">
-                    @(value(p, y))
-                </ChildContent>
-            </TemplateColumn>
-        }
-        <TemplateColumn Context="y">
-            <MyTableRowButtons TEntity="TEntity" Item="@y" BasePath="@BasePath" Query="@query" />
-        </TemplateColumn>
-    </QuickGrid>
+    <MyQuickGrid TEntity="TEntity" Repo="@Repo" Entities="@Others" BasePath="@BasePath" Query="@query" ShowHeader="@false"/>
 }
 <MyTablePageNav Query="@query" TotalCount="@totalCount" CurrentUri="@nav.Uri" />
 
@@ -41,7 +12,6 @@
     [Parameter] public IRepo<TEntity> Repo { get; set; }
     [Parameter] public string BasePath { get; set; }
     [Inject] private NavigationManager nav { get; set; }
-    [Inject] private ApplicationDbContext db { get; set; }
     private int totalCount;
     private Query query;
     protected override async Task OnInitializedAsync()
@@ -67,43 +37,4 @@
         Entities = entities.AsQueryable();
         Others = others.AsQueryable();
     }
-    private string value(PropertyInfo p, TEntity e){
-        var v = isSelect(p) ? getSelectValue(p,e) : p?.GetValue(e);
-        return v?.ToString() ?? string.Empty;
-    }
-    private bool isSelect(PropertyInfo p) => p?.GetCustomAttribute<SelectAttribute>() != null;
-    private string getSelectValue(PropertyInfo p, TEntity e)
-    {
-        var a = p?.GetCustomAttribute<SelectAttribute>();
-        var id = p?.GetValue(e) as Guid?;
-        if (id is null) return string.Empty;
-        var t = a?.EntityType;
-        var entity = db.Find(t, id);
-        var pi = entity?.GetType().GetProperty(a?.DisplayProperty ?? string.Empty);
-        return pi?.GetValue(entity)?.ToString() ?? string.Empty;
-    }
-
-    private bool show(PropertyInfo p){
-        if (p is null) return false;
-        if (p.Name == nameof(NamedEntity.Id)) return false;
-        var t = p?.PropertyType;
-        if (t == typeof(string)) return true;
-        if (typeof(IEnumerable).IsAssignableFrom(t)) return false;
-        if (t.IsClass) return false;
-        return true;
-    }
 }
-
-<style>
-    .myTable {
-        table-layout: fixed;
-        width: 100%;
-        max-width: 100%;
-    }
-
-        .myTable td {
-            white-space: normal;
-            overflow-wrap: anywhere;
-            word-break: break-word;
-        }
-</style>
