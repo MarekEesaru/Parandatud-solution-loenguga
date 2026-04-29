@@ -16,9 +16,12 @@
             </ChildContent>
         </TemplateColumn>
     }
+    @if (ShowButtons)
+    {
     <TemplateColumn Context="y">
         <MyTableRowButtons TEntity="TEntity" Item="@y" BasePath="@BasePath" Query="@Query" />
     </TemplateColumn>
+    }
 </QuickGrid>
 @code {
     [Parameter] public IQueryable<TEntity> Entities { get; set; }
@@ -27,6 +30,7 @@
     [Parameter] public IRepo<TEntity> Repo { get; set; }
     [Parameter] public bool ShowHeader { get; set; } = true;
     [Parameter] public bool ShowMyHeader { get; set; } = true;
+    [Parameter] public bool ShowButtons { get; set; } = true;
     private bool show(PropertyInfo p)
     {
         if (p is null) return false;

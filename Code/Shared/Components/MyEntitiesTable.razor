@@ -1,5 +1,31 @@
 ﻿@typeparam TEntity where TEntity : BaseEntity
 <MyQuickGrid TEntity="TEntity" Repo="@Repo" Entities="@Entities" BasePath="@BasePath" Query="@query"/>
+@if (isSelected(selectedItem))
+{
+    foreach (var c in new RelatedLists(selectedItem))
+    {
+        var items = c.Items;
+        var cols = c.Properties;
+        <div class="panel">
+            <div class="header">
+                <span>@c.Name (@c.Count)</span>
+                <a href="@closHref(selectedItem)" aria-label="Close" class="close">×</a>
+            </div>
+            <QuickGrid Class="table myTable" Items="items">
+                @foreach (var p in cols)
+                {
+                    @if (!show(p)) continue;
+                    <TemplateColumn>
+                        <HeaderTemplate>@p.Name</HeaderTemplate>
+                        <ChildContent Context="y">
+                            @(p.GetValue(y)?.ToString() ?? string.Empty)
+                        </ChildContent>
+                    </TemplateColumn>
+                }
+            </QuickGrid>
+        </div>
+    }
+}
 @if (Others.Any())
 {
     <MyQuickGrid TEntity="TEntity" Repo="@Repo" Entities="@Others" BasePath="@BasePath" Query="@query" ShowHeader="@false"/>
@@ -14,6 +40,7 @@
     [Inject] private NavigationManager nav { get; set; }
     private int totalCount;
     private Query query;
+    private TEntity selectedItem;
     protected override async Task OnInitializedAsync()
     {
         if (Repo is null) return;
@@ -33,8 +60,22 @@
             }
             entities.Add(e);
             if (e.Id.ToString() != query.Selected) toOthers = true;
+            toOthers = true;
+            selectedItem = e;
         }
         Entities = entities.AsQueryable();
         Others = others.AsQueryable();
+    }
+    private bool isSelected(TEntity e) => query.Selected == e?.Id.ToString();
+    private string closHref(TEntity e) => query.Href(BasePath, e.Id);
+    private bool show(PropertyInfo p)
+    {
+        if (p is null) return false;
+        if (p.Name == nameof(NamedEntity.Id)) return false;
+        var t = p?.PropertyType;
+        if (t == typeof(string)) return true;
+        if (typeof(IEnumerable).IsAssignableFrom(t)) return false;
+        if (t.IsClass) return false;
+        return true;
     }
 }

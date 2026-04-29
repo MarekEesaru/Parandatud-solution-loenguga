@@ -12,7 +12,7 @@ namespace Abc.Infra
 
             await seedTable(db.Currencies, [nameof(Currency.Timestamp)]);
 
-            await seedTable(db.Countries, [nameof(Country.Currencies), nameof(Country.Timestamp)]);
+            await seedTable(db.Countries, [nameof(Country.Currencies), nameof(Country.CountryCurrencies), nameof(Country.Timestamp)]);
 
             await seedTable(db.Money, [nameof(Money.CurrencyId), nameof(Money.Currency), nameof(Money.Timestamp)]);
 

@@ -21,4 +21,10 @@ public sealed class Query(Dictionary<string, string> d = null)
     public string Href(string baseUri, int? page = null, int? pageSize = null)
         => $"{baseUri}?{nameof(Page)}={page ?? Page}&{nameof(PageSize)}={pageSize ?? PageSize}{sort}{search}";
     public string Href(string baseUri, Guid id) => Href(baseUri) + selected(id);
+    public string Href(string baseUri, string sortBy)
+    {
+        var n = ((SortBy == sortBy) && (SortDir == "desc")) ? null : sortBy;
+        var d = SortBy != sortBy ? "asc" : "desc";
+        return Href(baseUri, 1);
+    }
 }
