@@ -104,9 +104,9 @@ namespace Abc.Aids
             if (t == typeof(bool)) return Bool();
             if (t == typeof(string)) return String();
             if (t == typeof(DateTime)) return DateTime();
-            if (t == typeof(TimeSpan)) return TimeSpan();
-            if (t == typeof(Guid)) return Guid();
-            throw new NotSupportedException($"Type {t} is not supported.");
+            //if (t == typeof(TimeSpan)) return TimeSpan();
+            //if (t == typeof(Guid)) return Guid();
+            return null;
         }
     }
 }

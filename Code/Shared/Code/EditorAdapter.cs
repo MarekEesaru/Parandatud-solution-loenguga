@@ -20,53 +20,69 @@ public interface IEditorAdapter
 public sealed partial class EditorAdapter(ComponentBase c, object item, string propName) : IEditorAdapter
 {
     public PropertyInfo PropInfo => ad?.PropInfo;
-    public string DisplayName => HasName ? ToName : string.Empty;
-    public Type Editor => UnderlyingType.IsString() ? typeof(InputText)
-                        : UnderlyingType.IsBool() ? typeof(InputCheckbox)
-                        : UnderlyingType.IsDate() ? Generic(typeof(InputDate<>), PropType)
-                        : UnderlyingType.IsNumeric() ? Generic(typeof(InputNumber<>), PropType)
+    public string DisplayName => hasName ? toName : string.Empty;
+    public Type Editor => isSelect ? typeof(MyEntitiesSelect)
+                        : underlyingType.IsString() ? typeof(InputText)
+                        : underlyingType.IsBool() ? typeof(InputCheckbox)
+                        : underlyingType.IsDate() ? generic(typeof(InputDate<>), propType)
+                        : underlyingType.IsNumeric() ? generic(typeof(InputNumber<>), propType)
                         : null;
-    public Type Validator => Generic(typeof(ValidationMessage<>), PropType);
+    public Type Validator => generic(typeof(ValidationMessage<>), propType);
     public IDictionary<string, object> EditorParams
         => new Dictionary<string, object>
         {
             ["id"] = propName,
-            ["name"] = InputName,
+            ["name"] = inputName,
             ["class"] = "form-control",
             ["Value"] = ad.PropValue,
-            ["ValueChanged"] = ValChanged(),
-            ["ValueExpression"] = ValExpression()
-        };
+            ["ValueChanged"] = valChanged(),
+            ["ValueExpression"] = valExpression()
+        }.withSelectParams(hasSelect);
     public IDictionary<string, object> ValidationParams
         => new Dictionary<string, object>
         {
-            ["For"] = ValExpression(),
+            ["For"] = valExpression(),
             ["class"] = "text-danger"
         };
 
     internal readonly IPropertyAdapter ad = new PropertyAdapter(item, propName);
-    internal EventCallback<TValue> Changed<TValue>()
+    internal EventCallback<TValue> changed<TValue>()
         => EventCallback.Factory.Create<TValue>(c, value => {
             ad.SetValue(value);
             return Task.CompletedTask;
         });
-    internal Expression<Func<TValue>> Expression<TValue>()
+    internal Expression<Func<TValue>> expression<TValue>()
     {
-        var i = System.Linq.Expressions.Expression.Constant(item);
-        var p = System.Linq.Expressions.Expression.Property(System.Linq.Expressions.Expression.Convert(i, ad.ItemType), ad.PropInfo);
-        return System.Linq.Expressions.Expression.Lambda<Func<TValue>>(p);
+        var i = Expression.Constant(item);
+        var p = Expression.Property(Expression.Convert(i, ad.ItemType), ad.PropInfo);
+        return Expression.Lambda<Func<TValue>>(p);
     }
     internal const BindingFlags flags = BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic;
-    internal bool HasName => !string.IsNullOrWhiteSpace(propName);
-    internal string InputName => (ad?.ItemType is null) ? propName : $"{ad.ItemType.Name}.{propName}";
-    internal object MakeGeneric(MethodInfo n) => n.MakeGenericMethod(ad.PropType).Invoke(this, null);
-    internal static MethodInfo Method(string name) => typeof(EditorAdapter).GetMethod(name, flags);
+    internal bool hasName => !string.IsNullOrWhiteSpace(propName);
+    internal string inputName => (ad?.ItemType is null) ? propName : $"{ad.ItemType.Name}.{propName}";
+    internal object makeGeneric(MethodInfo n) => n.MakeGenericMethod(ad.PropType).Invoke(this, null);
+    internal static MethodInfo method(string name) => typeof(EditorAdapter).GetMethod(name, flags);
     [GeneratedRegex("(\\B[A-Z])")] internal static partial Regex myRegex();
-    internal Type PropType => ad?.PropType;
-    internal string ToName => myRegex().Replace(propName, " $1");
-    internal Type UnderlyingType => ad?.UnderlyingType ?? typeof(object);
-    internal object ValChanged() => MakeGeneric(Method(nameof(Changed)));
-    internal object ValExpression() => MakeGeneric(Method(nameof(Expression)));
-    internal static Type Generic(Type editor, Type t) => editor.MakeGenericType(t);
+    internal Type propType => ad?.PropType;
+    internal string toName => myRegex().Replace(propName, " $1");
+    internal Type underlyingType => ad?.UnderlyingType ?? typeof(object);
+    internal object valChanged() => makeGeneric(method(nameof(changed)));
+    internal object valExpression() => makeGeneric(method(nameof(expression)));
+    internal static Type generic(Type editor, Type t) => editor.MakeGenericType(t);
+
+
+    internal bool isSelect => hasSelect is not null && propType == typeof(Guid?);
+    internal SelectAttribute hasSelect => ad?.PropInfo?.GetCustomAttribute<SelectAttribute>();
+}
+
+file static class EditorParamsExtensions
+{
+    public static IDictionary<string, object> withSelectParams(this IDictionary<string, object> d, SelectAttribute a)
+    {
+        if (a is null) return d;
+        d[nameof(SelectAttribute.EntityType)] = a.EntityType;
+        d[nameof(SelectAttribute.DisplayProperty)] = a.DisplayProperty;
+        return d;
+    }
 
 }
