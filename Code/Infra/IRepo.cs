@@ -11,6 +11,7 @@ public sealed class Query(Dictionary<string, string> d = null)
     public string SortDir => get(nameof(SortDir));
     public string SearchBy => get(nameof(SearchBy));
     public string SearchStr => get(nameof(SearchStr));
+    public string Selected => get(nameof(Selected));
     private string get(string name) => (d ?? []).TryGetValue(name, out var s) ? s : null;
     private static int toInt(string s, int def) => int.TryParse(s, out var i) ? i : def;
 }
