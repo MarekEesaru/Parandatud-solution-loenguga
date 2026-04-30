@@ -16,6 +16,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.5" />
 	<PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="10.0.5" />
 	<ProjectReference Include="..\Jobs\Jobs.csproj" />
+    <InternalsVisibleTo Include="Abc.Tests.Shared" />
   </ItemGroup>
 
 </Project>

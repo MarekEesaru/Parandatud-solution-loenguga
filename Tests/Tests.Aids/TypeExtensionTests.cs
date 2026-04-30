@@ -7,7 +7,7 @@ namespace Abc.Tests.Aids
 {
     [TestClass] public class TypeExtensionTests : TestAids
     {
-        [TestInitialize] public  void Initialize() => Type = typeof(TypeExtension);
+        [TestInitialize] public  void Initialize() => type = typeof(TypeExtension);
         [TestMethod] public void IsBoolTest() 
         { 
             Assert.IsTrue(TypeExtension.IsBool(typeof(bool))); 

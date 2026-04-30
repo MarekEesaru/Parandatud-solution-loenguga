@@ -4,7 +4,7 @@ namespace Abc.Tests.Aids;
 
 public abstract class TestAids<TClass> : TestAids where TClass : class, new() {
     protected TClass obj;
-    [TestInitialize] public virtual void Initialize() => Type = typeof(TClass);
+    [TestInitialize] public virtual void Initialize() => type = typeof(TClass);
     protected const BindingFlags publicDeclared = BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Static;
     protected static IEnumerable<string> GetProperties() => Aids.GetType.PropertyNames<TClass>(publicDeclared);
     protected static IEnumerable<string> GetMethods() => Aids.GetType.MethodNames<TClass>(publicDeclared, false);
@@ -18,10 +18,10 @@ public abstract class TestAids<TClass> : TestAids where TClass : class, new() {
 }
 public abstract class TestAids
 {
-    protected Type Type {  get; set; }
+    protected Type type {  get; set; }
     [TestMethod] public void IsCorrectClassTest()
     {
-        var className = Type?.Name;
+        var className = type?.Name;
         var testClassName = GetType().Name;
         Assert.AreEqual(testClassName.Replace("Tests", ""), className);
     }

@@ -21,6 +21,7 @@ public interface IEditorAdapter
 
 public sealed partial class EditorAdapter(ComponentBase c, object item, string propName) : IEditorAdapter
 {
+    public EditorAdapter() : this(null, null, null) { }
     public PropertyInfo PropInfo => ad?.PropInfo;
     public string DisplayName => hasName ? toName : string.Empty;
     public Type Editor => isSelect ? typeof(MyEntitiesSelect)
