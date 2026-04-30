@@ -1,6 +1,3 @@
-using System.Linq;
-using System.Collections.Generic;
-
 namespace Abc.Tests.Aids;
 public abstract class BaseTests<TClass>: TestAids<TClass> where TClass : class, new()
 {
