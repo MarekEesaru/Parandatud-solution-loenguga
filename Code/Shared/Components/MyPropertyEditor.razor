@@ -1,30 +1,22 @@
 ﻿<dl class="row">
-    @if (hasProperty)
+    @if (ad.HasProperty)
     {
         <dt class="col-md-4">
-            <label for="@PropertyName" class="form-label>">@inputLabel</label>
+            <label for="@PropertyName" class="form-label>">@ad.DisplayName</label>
         </dt>
         <dd class="col-md-8">
-        @if (hasEditor)
+        @if (ad.HasEditor)
         {
-            <DynamicComponent Type="@editorType" Parameters="@editorParams" />
-            <DynamicComponent Type="@validationType" Parameters="@validationParams" />
+                <DynamicComponent Type="@ad.Editor" Parameters="@ad.EditorParams" />
+                <DynamicComponent Type="@ad.Validator" Parameters="@ad.ValidationParams" />
         }
         </dd>
     }
 </dl>
 
 @code {
+    private IEditorAdapter ad;
     [Parameter] public object Item { get; set; }
     [Parameter] public string PropertyName { get; set; } = string.Empty;
-    protected override void OnParametersSet() => ad = crAdapter();
-    private IEditorAdapter crAdapter() => new EditorAdapter(this, Item, PropertyName);
-    private IEditorAdapter ad;
-    private bool hasEditor => editorType is not null;
-    private bool hasProperty => ad?.PropInfo is not null;
-    private string inputLabel => ad?.DisplayName ?? string.Empty;
-    private Type editorType => ad?.Editor;
-    private Type validationType => ad?.Validator;
-    private IDictionary<string, object> editorParams => ad?.EditorParams;
-    private IDictionary<string, object> validationParams => ad?.ValidationParams;
+    protected override void OnParametersSet() => ad = new EditorAdapter(this, Item, PropertyName);
 }

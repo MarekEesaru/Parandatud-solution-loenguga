@@ -13,6 +13,8 @@ public interface IEditorAdapter
     PropertyInfo PropInfo { get; }
     Type Editor { get; }
     Type Validator { get; }
+    bool HasEditor { get; }
+    bool HasProperty { get; }
     IDictionary<string, object> EditorParams { get; }
     IDictionary<string, object> ValidationParams { get; }
 }
@@ -69,12 +71,11 @@ public sealed partial class EditorAdapter(ComponentBase c, object item, string p
     internal object valChanged() => makeGeneric(method(nameof(changed)));
     internal object valExpression() => makeGeneric(method(nameof(expression)));
     internal static Type generic(Type editor, Type t) => editor.MakeGenericType(t);
-
-
     internal bool isSelect => hasSelect is not null && propType == typeof(Guid?);
     internal SelectAttribute hasSelect => ad?.PropInfo?.GetCustomAttribute<SelectAttribute>();
+    public bool HasEditor => Editor is not null;
+    public bool HasProperty => PropInfo is not null;
 }
-
 file static class EditorParamsExtensions
 {
     public static IDictionary<string, object> withSelectParams(this IDictionary<string, object> d, SelectAttribute a)
