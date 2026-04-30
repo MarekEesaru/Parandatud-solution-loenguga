@@ -25,6 +25,6 @@ public abstract class TestAids
         var testClassName = GetType().Name;
         Assert.AreEqual(testClassName.Replace("Tests", ""), className);
     }
-    public static void AreEqual<T>(T expected, T actual) => Assert.AreEqual(expected, actual);
-    public static void AreSame(object expected, object actual) => Assert.AreEqual(expected, actual);
+    public static void areEqual<T>(T expected, T actual) => Assert.AreEqual(expected, actual);
+    public static void areSame(object expected, object actual) => Assert.AreEqual(expected, actual);
 }
