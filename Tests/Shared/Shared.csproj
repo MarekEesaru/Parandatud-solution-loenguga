@@ -1,19 +1,19 @@
-﻿<Project Sdk="MSTest.Sdk/4.0.1">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
-	<AssemblyName>Abc.Tests.Domain</AssemblyName>
-	<RootNamespace>Abc.Tests.Domain</RootNamespace>
+	<AssemblyName>Abc.Tests.Shared</AssemblyName>
+	<RootNamespace>Abc.Tests.Shared</RootNamespace>
     <UseVSTest>true</UseVSTest>
 	<PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Code\Domain\Domain.csproj" />
-	<ProjectReference Include="..\Tests.Aids\Aids.csproj" />
+    <ProjectReference Include="..\..\Code\Shared\Shared.csproj" />
+    <ProjectReference Include="..\Tests.Aids\Aids.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,6 +26,11 @@
 
   <ItemGroup>
     <PackageReference Update="MSTest.TestFramework" Version="4.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Code\" />
+    <Folder Include="Pages\" />
   </ItemGroup>
 
 </Project>
