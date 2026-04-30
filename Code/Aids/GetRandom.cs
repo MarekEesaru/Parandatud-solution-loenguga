@@ -9,9 +9,9 @@ namespace Abc.Aids
     {
         private static readonly Random r = Random.Shared;
         public static sbyte Int8(sbyte min = sbyte.MinValue, sbyte max = sbyte.MaxValue) => (sbyte)Int32(min, max);
-        public static byte Uint8(byte min = byte.MinValue, byte max = byte.MaxValue) => (byte)Int32(min, max);
+        public static byte UInt8(byte min = byte.MinValue, byte max = byte.MaxValue) => (byte)Int32(min, max);
         public static short Int16(short min = short.MinValue, short max = short.MaxValue) => (short)Int32(min, max);
-        public static ushort Uint16(ushort min = ushort.MinValue, ushort max = ushort.MaxValue) => (ushort)Int32(min, max);
+        public static ushort UInt16(ushort min = ushort.MinValue, ushort max = ushort.MaxValue) => (ushort)Int32(min, max);
 
         public static int Int32(int min = int.MinValue, int max = int.MaxValue)
         {
@@ -19,14 +19,14 @@ namespace Abc.Aids
             if (min > max) (min, max) = (max, min);
             return r.Next(min, max);
         }
-        public static uint Uint32(uint min = uint.MinValue, uint max = uint.MaxValue) => (uint)Int64(min, max);
+        public static uint UInt32(uint min = uint.MinValue, uint max = uint.MaxValue) => (uint)Int64(min, max);
         public static long Int64(long min = long.MinValue, long max = long.MaxValue)
         {
             if (min == max) return min;
             if (min > max) (min, max) = (max, min);
             return r.NextInt64(min, max);
         }
-        public static ulong Uint64(ulong min = ulong.MinValue, ulong max = ulong.MaxValue) => (ulong)Double(min, max);
+        public static ulong UInt64(ulong min = ulong.MinValue, ulong max = ulong.MaxValue) => (ulong)Double(min, max);
         public static double Double(double min = double.MinValue, double max = double.MaxValue)
         {
             if (min == max) return min;
@@ -36,13 +36,13 @@ namespace Abc.Aids
         public static decimal Decimal(decimal min = decimal.MinValue, decimal max = decimal.MaxValue) => (decimal)Double((double)min, (double)max);
 
         public static float Float(float min = float.MinValue, float max = float.MaxValue) => (ulong)Double(min, max);
-        public static char Char(char min, char max) => (char)Uint16(min, max);
+        public static char Char(char min, char max) => (char)UInt16(min, max);
         public static bool Bool() => r.Next(2) == 0;
         public static string String(byte minLength = byte.MinValue, byte maxLength = byte.MaxValue, string chars = null)
         {
-            var length = Uint8(minLength, maxLength);
+            var length = UInt8(minLength, maxLength);
             var s = new char[length];
-            for (var i = 0; i < length; i++) s[i] = (chars is null) ? Char('a', 'z') : chars[Uint8(0, (byte)chars.Length)];
+            for (var i = 0; i < length; i++) s[i] = (chars is null) ? Char('a', 'z') : chars[UInt8(0, (byte)chars.Length)];
             return new string(s);
         }
         public static DateTime DateTime(DateTime? min = null, DateTime? max = null)
@@ -90,13 +90,13 @@ namespace Abc.Aids
             var x = Nullable.GetUnderlyingType(t);
             if (x is not null) t = x;
             if (t == typeof(sbyte)) return Int8();
-            if (t == typeof(byte)) return Uint8();
+            if (t == typeof(byte)) return UInt8();
             if (t == typeof(short)) return Int16();
-            if (t == typeof(ushort)) return Uint16();
+            if (t == typeof(ushort)) return UInt16();
             if (t == typeof(int)) return Int32();
-            if (t == typeof(uint)) return Uint32();
+            if (t == typeof(uint)) return UInt32();
             if (t == typeof(long)) return Int64();
-            if (t == typeof(ulong)) return Uint64();
+            if (t == typeof(ulong)) return UInt64();
             if (t == typeof(float)) return Float();
             if (t == typeof(double)) return Double();
             if (t == typeof(decimal)) return Decimal();
