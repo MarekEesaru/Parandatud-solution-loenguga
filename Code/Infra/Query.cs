@@ -23,11 +23,5 @@ public sealed class Query(Dictionary<string, string> d = null)
     public string Href(string baseUri, int? page = null, int? pageSize = null)
         => (isNull(baseUri)) ? empty : $"{baseUri}?{nameof(Page)}={page ?? Page}&{nameof(PageSize)}={pageSize ?? PageSize}{sort}{search}";
     public string Href(string baseUri, Guid id) => (isNull(baseUri)) ? empty : Href(baseUri) + selected(id);
-    public string Href(string baseUri, string sortBy)
-    {
-        var n = ((SortBy == sortBy) && (SortDir == "desc")) ? null : sortBy;
-        var d = SortBy != sortBy ? "asc" : "desc";
-        return (isNull(baseUri)) ? empty : Href(baseUri, 1);
-    }
     private static bool isNull(string s) => string.IsNullOrWhiteSpace(s);
 }

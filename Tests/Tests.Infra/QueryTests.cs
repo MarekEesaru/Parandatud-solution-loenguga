@@ -9,12 +9,14 @@ namespace Abc.Tests.Infra;
 public class QueryTests : BaseTests<Query>
 {
     private readonly int[] pageSizes = [7, 15, 25, 50, 100];
+    private string baseUrl;
     private Dictionary<string, string> d;
     private Query q;
     [TestInitialize]
     public override void Initialize()
     {
         base.Initialize();
+        baseUrl = GetRandom.String(3, 10);
         d = new Dictionary<string, string>
         {
             [nameof(Query.Page)] = GetRandom.UInt8(1).ToString(),
@@ -68,9 +70,38 @@ public class QueryTests : BaseTests<Query>
         areEqual(d[nameof(Query.SearchStr)], q.SearchStr);
         areEqual("", obj.SearchStr);
     }
-    [TestMethod] public void HrefTest() => areEqual("", obj.Href(null));
-    [TestMethod] public void SortHrefTest() => areEqual("", obj.Href(null, null, null));
-    [TestMethod] public void PageHrefTest() => areEqual("", obj.Href(null, null));
-    [TestMethod] public void SelectHrefTest() => areEqual("", obj.Href(null, Guid.Empty));
+    private string buildExpected(int? page = null, int? pageSize = null) => $"{baseUrl}" +
+        $"?Page={page?.ToString() ?? d[nameof(Query.Page)]}" +
+        $"&PageSize={pageSize?.ToString() ?? d[nameof(Query.PageSize)]}" +
+        $"&SortBy={d[nameof(Query.SortBy)]}" +
+        $"&SortDir={d[nameof(Query.SortDir)]}" +
+        $"&SearchBy={d[nameof(Query.SearchBy)]}" +
+        $"&SearchStr={d[nameof(Query.SearchStr)]}";
+    private string buildExpected(Guid id) => buildExpected() + $"&Selected={id}";
+    [TestMethod] public void HrefTest()
+    {
+        var actual = q.Href(baseUrl);
+        var expected = buildExpected();
+        areEqual(expected, actual);
+        areEqual("", obj.Href(null));
+
+    }
+    [TestMethod] public void PageHrefTest()
+    {
+        var page = GetRandom.UInt8(1);
+        var pageSize = GetRandom.Int8(5);
+        var actual = q.Href(baseUrl, page, pageSize);
+        var expected = buildExpected(page, pageSize);
+        areEqual(expected, actual);
+        areEqual("", obj.Href(null, null, null));
+    }
+    [TestMethod] public void SelectHrefTest()
+    {
+        var id = GetRandom.Guid();
+        var actual = q.Href(baseUrl, id);
+        var expected = buildExpected(id);
+        areEqual(expected, actual);
+        areEqual("", obj.Href(null, Guid.Empty));
+    }
 }
 
