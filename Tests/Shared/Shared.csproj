@@ -33,4 +33,8 @@
     <Folder Include="Pages\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="bunit.web" Version="1.40.0" />
+  </ItemGroup>
+
 </Project>
