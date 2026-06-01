@@ -9,9 +9,7 @@
   </Folder>
   <Folder Name="/Soft/" />
   <Folder Name="/Soft/App/">
-    <Project Path="Soft/Maui/Maui.csproj" Id="75667b13-3ac4-45b7-98ca-5412dd48d220">
-      <Deploy Solution="Debug|*" />
-    </Project>
+    <Project Path="Soft/App/App.csproj" />
   </Folder>
   <Folder Name="/Soft/Movie/">
     <Project Path="Soft/Movie/Client/Movie.Client.csproj" />

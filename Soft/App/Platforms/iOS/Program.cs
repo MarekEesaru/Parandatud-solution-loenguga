@@ -1,6 +1,6 @@
 ﻿using UIKit;
 
-namespace Abc.Soft.Maui
+namespace Abc.Soft.App
 {
     public class Program
     {
