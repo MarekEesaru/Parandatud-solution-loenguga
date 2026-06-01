@@ -1,4 +1,4 @@
-﻿namespace Maui
+﻿namespace Abc.Soft.Maui
 {
     public partial class MainPage : ContentPage
     {
